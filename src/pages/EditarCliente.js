@@ -267,6 +267,25 @@ const EditarCliente = () => {
       newErrors.cpf = 'CPF deve ter 11 dígitos';
     }
 
+    // Validação das referências (todas obrigatórias)
+    // Primeira referência
+    const ref1WhatsApp = (formData.referencia1Whatsapp || '').replace(/\D/g, '');
+    if (!formData.referencia1Nome || !formData.referencia1Nome.trim()) newErrors.referencia1Nome = 'Nome é obrigatório';
+    if (!formData.referencia1Relacao || !formData.referencia1Relacao.trim()) newErrors.referencia1Relacao = 'Relação é obrigatória';
+    if (!ref1WhatsApp || ref1WhatsApp.length < 10) newErrors.referencia1Whatsapp = 'WhatsApp é obrigatório e deve ser válido';
+    
+    // Segunda referência
+    const ref2WhatsApp = (formData.referencia2Whatsapp || '').replace(/\D/g, '');
+    if (!formData.referencia2Nome || !formData.referencia2Nome.trim()) newErrors.referencia2Nome = 'Nome é obrigatório';
+    if (!formData.referencia2Relacao || !formData.referencia2Relacao.trim()) newErrors.referencia2Relacao = 'Relação é obrigatória';
+    if (!ref2WhatsApp || ref2WhatsApp.length < 10) newErrors.referencia2Whatsapp = 'WhatsApp é obrigatório e deve ser válido';
+    
+    // Terceira referência
+    const ref3WhatsApp = (formData.referencia3Whatsapp || '').replace(/\D/g, '');
+    if (!formData.referencia3Nome || !formData.referencia3Nome.trim()) newErrors.referencia3Nome = 'Nome é obrigatório';
+    if (!formData.referencia3Relacao || !formData.referencia3Relacao.trim()) newErrors.referencia3Relacao = 'Relação é obrigatória';
+    if (!ref3WhatsApp || ref3WhatsApp.length < 10) newErrors.referencia3Whatsapp = 'WhatsApp é obrigatório e deve ser válido';
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -656,7 +675,7 @@ const EditarCliente = () => {
                     </h4>
                     <FormGrid>
                       <FormGroup>
-                        <Label>Nome Completo</Label>
+                        <Label>Nome Completo *</Label>
                         <Input
                           name="referencia1Nome"
                           value={formData.referencia1Nome}
@@ -668,7 +687,7 @@ const EditarCliente = () => {
                       </FormGroup>
 
                       <FormGroup>
-                        <Label>Relação</Label>
+                        <Label>Relação *</Label>
                         <Input
                           name="referencia1Relacao"
                           value={formData.referencia1Relacao}
@@ -680,7 +699,7 @@ const EditarCliente = () => {
                       </FormGroup>
 
                       <FormGroup>
-                        <Label>WhatsApp</Label>
+                        <Label>WhatsApp *</Label>
                         <MaskedInput
                           mask="phone"
                           name="referencia1Whatsapp"
@@ -701,7 +720,7 @@ const EditarCliente = () => {
                     </h4>
                     <FormGrid>
                       <FormGroup>
-                        <Label>Nome Completo</Label>
+                        <Label>Nome Completo *</Label>
                         <Input
                           name="referencia2Nome"
                           value={formData.referencia2Nome}
@@ -713,7 +732,7 @@ const EditarCliente = () => {
                       </FormGroup>
 
                       <FormGroup>
-                        <Label>Relação</Label>
+                        <Label>Relação *</Label>
                         <Input
                           name="referencia2Relacao"
                           value={formData.referencia2Relacao}
@@ -725,7 +744,7 @@ const EditarCliente = () => {
                       </FormGroup>
 
                       <FormGroup>
-                        <Label>WhatsApp</Label>
+                        <Label>WhatsApp *</Label>
                         <MaskedInput
                           mask="phone"
                           name="referencia2Whatsapp"
@@ -746,7 +765,7 @@ const EditarCliente = () => {
                     </h4>
                     <FormGrid>
                       <FormGroup>
-                        <Label>Nome Completo</Label>
+                        <Label>Nome Completo *</Label>
                         <Input
                           name="referencia3Nome"
                           value={formData.referencia3Nome}
@@ -758,7 +777,7 @@ const EditarCliente = () => {
                       </FormGroup>
 
                       <FormGroup>
-                        <Label>Relação</Label>
+                        <Label>Relação *</Label>
                         <Input
                           name="referencia3Relacao"
                           value={formData.referencia3Relacao}
@@ -770,7 +789,7 @@ const EditarCliente = () => {
                       </FormGroup>
 
                       <FormGroup>
-                        <Label>WhatsApp</Label>
+                        <Label>WhatsApp *</Label>
                         <MaskedInput
                           mask="phone"
                           name="referencia3Whatsapp"

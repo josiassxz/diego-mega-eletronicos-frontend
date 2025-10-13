@@ -328,41 +328,23 @@ const CadastroCliente = () => {
   const validateStep4 = () => {
     const newErrors = {};
     
-    // Validar primeira referência
+    // Validar primeira referência (obrigatória)
     const ref1WhatsApp = (formData.referencia1Whatsapp || '').replace(/\D/g, '');
-    const hasRef1 = formData.referencia1Nome.trim() || formData.referencia1Relacao.trim() || ref1WhatsApp;
+    if (!formData.referencia1Nome.trim()) newErrors.referencia1Nome = 'Nome é obrigatório';
+    if (!formData.referencia1Relacao.trim()) newErrors.referencia1Relacao = 'Relação é obrigatória';
+    if (!ref1WhatsApp || ref1WhatsApp.length < 10) newErrors.referencia1Whatsapp = 'WhatsApp é obrigatório e deve ser válido';
     
-    if (hasRef1) {
-      if (!formData.referencia1Nome.trim()) newErrors.referencia1Nome = 'Nome é obrigatório';
-      if (!formData.referencia1Relacao.trim()) newErrors.referencia1Relacao = 'Relação é obrigatória';
-      if (!ref1WhatsApp || ref1WhatsApp.length < 10) newErrors.referencia1Whatsapp = 'WhatsApp inválido';
-    }
-    
-    // Validar segunda referência
+    // Validar segunda referência (obrigatória)
     const ref2WhatsApp = (formData.referencia2Whatsapp || '').replace(/\D/g, '');
-    const hasRef2 = formData.referencia2Nome.trim() || formData.referencia2Relacao.trim() || ref2WhatsApp;
+    if (!formData.referencia2Nome.trim()) newErrors.referencia2Nome = 'Nome é obrigatório';
+    if (!formData.referencia2Relacao.trim()) newErrors.referencia2Relacao = 'Relação é obrigatória';
+    if (!ref2WhatsApp || ref2WhatsApp.length < 10) newErrors.referencia2Whatsapp = 'WhatsApp é obrigatório e deve ser válido';
     
-    if (hasRef2) {
-      if (!formData.referencia2Nome.trim()) newErrors.referencia2Nome = 'Nome é obrigatório';
-      if (!formData.referencia2Relacao.trim()) newErrors.referencia2Relacao = 'Relação é obrigatória';
-      if (!ref2WhatsApp || ref2WhatsApp.length < 10) newErrors.referencia2Whatsapp = 'WhatsApp inválido';
-    }
-    
-    // Validar terceira referência
+    // Validar terceira referência (obrigatória)
     const ref3WhatsApp = (formData.referencia3Whatsapp || '').replace(/\D/g, '');
-    const hasRef3 = formData.referencia3Nome.trim() || formData.referencia3Relacao.trim() || ref3WhatsApp;
-    
-    if (hasRef3) {
-      if (!formData.referencia3Nome.trim()) newErrors.referencia3Nome = 'Nome é obrigatório';
-      if (!formData.referencia3Relacao.trim()) newErrors.referencia3Relacao = 'Relação é obrigatória';
-      if (!ref3WhatsApp || ref3WhatsApp.length < 10) newErrors.referencia3Whatsapp = 'WhatsApp inválido';
-    }
-    
-    // Verificar se pelo menos uma referência completa foi preenchida
-    const validRefs = [hasRef1, hasRef2, hasRef3].filter(Boolean);
-    if (validRefs.length === 0) {
-      newErrors.referencias = 'Informe pelo menos uma referência completa.';
-    }
+    if (!formData.referencia3Nome.trim()) newErrors.referencia3Nome = 'Nome é obrigatório';
+    if (!formData.referencia3Relacao.trim()) newErrors.referencia3Relacao = 'Relação é obrigatória';
+    if (!ref3WhatsApp || ref3WhatsApp.length < 10) newErrors.referencia3Whatsapp = 'WhatsApp é obrigatório e deve ser válido';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -747,7 +729,7 @@ const CadastroCliente = () => {
               <FormGrid>
                 <FullWidth>
                   <p style={{ color: theme.colors.neutral.textMuted, marginBottom: theme.spacing.md }}>
-                    Informe dados de até três pessoas que possam confirmar suas informações. Pelo menos uma referência completa é obrigatória.
+                    Informe dados de três pessoas que possam confirmar suas informações. Todas as referências são obrigatórias.
                   </p>
                   {errors.referencias && <ErrorMessage>{errors.referencias}</ErrorMessage>}
                 </FullWidth>
@@ -796,11 +778,11 @@ const CadastroCliente = () => {
                 {/* Segunda Referência */}
                 <FullWidth>
                   <h3 style={{ color: theme.colors.neutral.text, marginBottom: theme.spacing.md, fontSize: '1.1rem', marginTop: theme.spacing.lg }}>
-                    2. Segunda Referência (Opcional)
+                    2. Segunda Referência
                   </h3>
                 </FullWidth>
                 <FormGroup>
-                  <Label>Nome</Label>
+                  <Label>Nome *</Label>
                   <Input
                     name="referencia2Nome"
                     value={formData.referencia2Nome}
@@ -811,7 +793,7 @@ const CadastroCliente = () => {
                   {errors.referencia2Nome && <ErrorMessage>{errors.referencia2Nome}</ErrorMessage>}
                 </FormGroup>
                 <FormGroup>
-                  <Label>Relação</Label>
+                  <Label>Relação *</Label>
                   <Input
                     name="referencia2Relacao"
                     value={formData.referencia2Relacao}
@@ -822,7 +804,7 @@ const CadastroCliente = () => {
                   {errors.referencia2Relacao && <ErrorMessage>{errors.referencia2Relacao}</ErrorMessage>}
                 </FormGroup>
                 <FormGroup>
-                  <Label>WhatsApp</Label>
+                  <Label>WhatsApp *</Label>
                   <MaskedInput
                     name="referencia2Whatsapp"
                     mask="phone"
@@ -837,11 +819,11 @@ const CadastroCliente = () => {
                 {/* Terceira Referência */}
                 <FullWidth>
                   <h3 style={{ color: theme.colors.neutral.text, marginBottom: theme.spacing.md, fontSize: '1.1rem', marginTop: theme.spacing.lg }}>
-                    3. Terceira Referência (Opcional)
+                    3. Terceira Referência
                   </h3>
                 </FullWidth>
                 <FormGroup>
-                  <Label>Nome</Label>
+                  <Label>Nome *</Label>
                   <Input
                     name="referencia3Nome"
                     value={formData.referencia3Nome}
@@ -852,7 +834,7 @@ const CadastroCliente = () => {
                   {errors.referencia3Nome && <ErrorMessage>{errors.referencia3Nome}</ErrorMessage>}
                 </FormGroup>
                 <FormGroup>
-                  <Label>Relação</Label>
+                  <Label>Relação *</Label>
                   <Input
                     name="referencia3Relacao"
                     value={formData.referencia3Relacao}
@@ -863,7 +845,7 @@ const CadastroCliente = () => {
                   {errors.referencia3Relacao && <ErrorMessage>{errors.referencia3Relacao}</ErrorMessage>}
                 </FormGroup>
                 <FormGroup>
-                  <Label>WhatsApp</Label>
+                  <Label>WhatsApp *</Label>
                   <MaskedInput
                     name="referencia3Whatsapp"
                     mask="phone"
