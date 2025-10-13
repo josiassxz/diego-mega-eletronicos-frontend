@@ -16,35 +16,35 @@ export const Button = styled.button`
   gap: ${theme.spacing.xs};
   
   ${props => props.variant === 'primary' && css`
-    background: ${theme.colors.accent.red};
-    color: ${theme.colors.neutral.white};
+    background: ${theme.colors.accent.blue};
+    color: ${theme.colors.neutral.surface};
     
     &:hover:not(:disabled) {
-      background: ${theme.colors.accent.redHover};
+      background: ${theme.colors.accent.blueHover};
       transform: translateY(-2px);
       box-shadow: ${theme.shadows.medium};
     }
   `}
   
   ${props => props.variant === 'secondary' && css`
-    background: rgba(255, 255, 255, 0.1);
-    color: ${theme.colors.neutral.white};
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(10px);
+    background: ${theme.colors.neutral.surface};
+    color: ${theme.colors.neutral.text};
+    border: 1px solid ${theme.colors.neutral.border};
     
     &:hover:not(:disabled) {
-      background: rgba(255, 255, 255, 0.15);
-      border-color: rgba(255, 255, 255, 0.3);
+      background: ${theme.colors.neutral.surfaceHover};
+      border-color: ${theme.colors.neutral.textMuted};
     }
   `}
   
   ${props => props.variant === 'outline' && css`
     background: transparent;
-    color: ${theme.colors.neutral.white};
-    border: 2px solid ${theme.colors.accent.red};
+    color: ${theme.colors.accent.blue};
+    border: 2px solid ${theme.colors.accent.blue};
     
     &:hover:not(:disabled) {
-      background: ${theme.colors.accent.red};
+      background: ${theme.colors.accent.blue};
+      color: ${theme.colors.neutral.surface};
     }
   `}
   
@@ -76,10 +76,10 @@ Button.defaultProps = {
 
 export const IconButton = styled.button`
   padding: ${theme.spacing.xs};
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.text};
   cursor: pointer;
   transition: all 0.3s ease;
   display: inline-flex;
@@ -87,7 +87,7 @@ export const IconButton = styled.button`
   justify-content: center;
   
   &:hover:not(:disabled) {
-    background: rgba(255, 255, 255, 0.2);
+    background: ${theme.colors.neutral.surfaceHover};
     transform: scale(1.1);
   }
   

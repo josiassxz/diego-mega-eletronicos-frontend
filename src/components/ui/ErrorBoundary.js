@@ -1,4 +1,5 @@
 import React from 'react';
+import { theme } from '../../styles/theme';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -33,9 +34,9 @@ class ErrorBoundary extends React.Component {
         padding: '24px',
         margin: '16px',
         borderRadius: '12px',
-        background: 'rgba(255, 255, 255, 0.08)',
-        border: '1px solid rgba(255, 255, 255, 0.2)',
-        color: '#fff',
+        background: theme.colors.neutral.surface,
+        border: `1px solid ${theme.colors.neutral.border}`,
+        color: theme.colors.neutral.text,
         fontFamily: 'Inter, Roboto, sans-serif',
       };
 
@@ -61,14 +62,15 @@ class ErrorBoundary extends React.Component {
         borderRadius: '8px',
         border: 'none',
         cursor: 'pointer',
-        background: '#A855F7',
-        color: '#fff',
+        background: theme.colors.accent.blue,
+        color: theme.colors.neutral.surface,
         fontWeight: 600,
       };
 
       const secondaryButtonStyle = {
         ...buttonStyle,
-        background: 'rgba(255, 255, 255, 0.2)',
+        background: theme.colors.neutral.surfaceHover,
+        color: theme.colors.neutral.text,
       };
 
       return (

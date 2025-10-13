@@ -13,11 +13,10 @@ const UploadContainer = styled.div`
 
 const UploadButton = styled.label`
   padding: ${theme.spacing.md};
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 2px dashed rgba(255, 255, 255, 0.3);
+  background: ${theme.colors.neutral.surface};
+  border: 2px dashed ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.large};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.text};
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -28,8 +27,8 @@ const UploadButton = styled.label`
   min-height: 120px;
   
   &:hover {
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(255, 255, 255, 0.5);
+    background: ${theme.colors.neutral.surfaceHover};
+    border-color: ${theme.colors.accent.blue};
   }
   
   input {
@@ -55,7 +54,7 @@ const RemoveButton = styled.button`
   position: absolute;
   top: ${theme.spacing.xs};
   right: ${theme.spacing.xs};
-  background: rgba(239, 68, 68, 0.9);
+  background: ${theme.colors.status.error};
   border: none;
   border-radius: 50%;
   width: 32px;
@@ -63,12 +62,12 @@ const RemoveButton = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: ${theme.colors.neutral.surface};
   cursor: pointer;
   transition: all 0.3s ease;
   
   &:hover {
-    background: rgb(239, 68, 68);
+    background: ${theme.colors.status.errorDark};
     transform: scale(1.1);
   }
 `;

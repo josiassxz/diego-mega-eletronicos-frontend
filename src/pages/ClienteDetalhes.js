@@ -28,19 +28,18 @@ import { Input, Select, FormGroup } from '../components/ui/Input';
 
 const PageContainer = styled.div`
   min-height: 100vh;
-  background: ${theme.colors.gradient.background};
+  background: ${theme.colors.neutral.white};
   padding-bottom: ${theme.spacing.xl};
 `;
 
 const Header = styled.header`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${theme.colors.neutral.white};
+  border-bottom: 1px solid ${theme.colors.neutral.lightGray};
   padding: ${theme.spacing.md} 0;
   position: sticky;
   top: 0;
   z-index: 100;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.sm} 0;
@@ -66,10 +65,10 @@ const HeaderLeft = styled.div`
 `;
 
 const BackButton = styled.button`
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: ${theme.colors.neutral.white};
+  border: 1px solid ${theme.colors.neutral.lightGray};
   border-radius: ${theme.borderRadius.medium};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.black};
   cursor: pointer;
   padding: ${theme.spacing.sm};
   transition: all 0.3s ease;
@@ -78,7 +77,7 @@ const BackButton = styled.button`
   justify-content: center;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: ${theme.colors.neutral.lightGray};
     transform: translateY(-1px);
   }
 `;
@@ -86,7 +85,7 @@ const BackButton = styled.button`
 const PageTitle = styled.h1`
   font-size: ${theme.typography.sizes.h2};
   font-weight: ${theme.typography.weights.bold};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.black};
   margin: 0;
   display: flex;
   align-items: center;
@@ -118,19 +117,18 @@ const MainContent = styled.main`
 `;
 
 const ContentCard = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${theme.colors.neutral.white};
+  border: 1px solid ${theme.colors.neutral.lightGray};
   border-radius: ${theme.borderRadius.large};
   padding: ${theme.spacing.xl};
   margin-bottom: ${theme.spacing.lg};
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-  
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.lg};
     margin-bottom: ${theme.spacing.md};
   }
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.md};
   }
@@ -149,24 +147,24 @@ const SectionGrid = styled.div`
 `;
 
 const Section = styled.div`
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${theme.colors.neutral.white};
+  border: 1px solid ${theme.colors.neutral.lightGray};
   border-radius: ${theme.borderRadius.medium};
   padding: ${theme.spacing.lg};
   transition: all 0.3s ease;
-  
+
   &:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 255, 255, 0.15);
+    background: ${theme.colors.neutral.lightGray};
+    border-color: ${theme.colors.neutral.mediumGray};
   }
-  
+
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: ${theme.spacing.md};
   }
 `;
 
 const SectionTitle = styled.h3`
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.black};
   font-size: ${theme.typography.sizes.large};
   font-weight: ${theme.typography.weights.semiBold};
   margin: 0 0 ${theme.spacing.lg} 0;
@@ -174,9 +172,9 @@ const SectionTitle = styled.h3`
   align-items: center;
   gap: ${theme.spacing.sm};
   padding-bottom: ${theme.spacing.md};
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid ${theme.colors.neutral.lightGray};
   position: relative;
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -186,7 +184,7 @@ const SectionTitle = styled.h3`
     height: 2px;
     background: linear-gradient(90deg, ${theme.colors.accent.red}, transparent);
   }
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     font-size: ${theme.typography.sizes.medium};
   }
@@ -216,7 +214,7 @@ const FieldLabel = styled.label`
 `;
 
 const FieldValue = styled.div`
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.black};
   font-size: ${theme.typography.sizes.medium};
   padding: ${theme.spacing.sm} 0;
   min-height: 24px;
@@ -297,21 +295,21 @@ const DocumentsGrid = styled.div`
 `;
 
 const DocumentCard = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${theme.colors.neutral.white};
+  border: 1px solid ${theme.colors.neutral.lightGray};
   border-radius: ${theme.borderRadius.medium};
   padding: ${theme.spacing.md};
   text-align: center;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
   &:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: ${theme.colors.neutral.lightGray};
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    border-color: ${theme.colors.neutral.mediumGray};
   }
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     padding: ${theme.spacing.sm};
   }
@@ -342,10 +340,10 @@ const DocumentActions = styled.div`
 `;
 
 const DocumentButton = styled.button`
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: ${theme.colors.neutral.white};
+  border: 1px solid ${theme.colors.neutral.lightGray};
   border-radius: ${theme.borderRadius.small};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.black};
   cursor: pointer;
   padding: ${theme.spacing.xs};
   transition: all 0.3s ease;
@@ -356,17 +354,17 @@ const DocumentButton = styled.button`
   min-height: 36px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: ${theme.colors.neutral.lightGray};
     transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   }
 
   &.delete:hover {
-    background: rgba(239, 68, 68, 0.2);
-    border-color: rgba(239, 68, 68, 0.4);
-    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+    border-color: ${theme.colors.accent.red};
+    color: ${theme.colors.accent.red};
   }
-  
+
   @media (max-width: ${theme.breakpoints.mobile}) {
     min-width: 32px;
     min-height: 32px;
@@ -379,7 +377,7 @@ const HiddenFileInput = styled.input`
 `;
 
 const UploadArea = styled.div`
-  border: 2px dashed rgba(255, 255, 255, 0.3);
+  border: 2px dashed ${theme.colors.neutral.mediumGray};
   border-radius: ${theme.borderRadius.medium};
   padding: ${theme.spacing.xl};
   text-align: center;
@@ -388,8 +386,8 @@ const UploadArea = styled.div`
   transition: all 0.3s ease;
 
   &:hover {
-    border-color: rgba(255, 255, 255, 0.5);
-    background: rgba(255, 255, 255, 0.02);
+    border-color: ${theme.colors.neutral.black};
+    background: ${theme.colors.neutral.lightGray};
   }
 
   &.dragover {
@@ -415,7 +413,7 @@ const LoadingOverlay = styled.div`
 const LoadingSpinner = styled.div`
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
+  border: 4px solid ${theme.colors.neutral.lightGray};
   border-top-color: ${theme.colors.accent.red};
   border-radius: 50%;
   animation: spin 1s linear infinite;

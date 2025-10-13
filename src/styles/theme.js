@@ -2,22 +2,41 @@
 export const theme = {
   colors: {
     primary: {
-      dark: '#11061e',
-      medium: '#22182e',
-      light: '#34244a'
+      dark: '#2c3e50',
+      medium: '#34495e',
+      light: '#5d6d7e'
     },
     accent: {
-      red: '#fe422e',
-      redHover: '#e53e2b'
+      blue: '#4a90e2',
+      blueHover: '#357abd',
+      teal: '#5dade2',
+      tealHover: '#3498db',
+      green: '#58d68d',
+      greenHover: '#28b463',
+      orange: '#f39c12',
+      orangeHover: '#e67e22'
     },
     neutral: {
-      white: '#ffffff',
-      lightGray: '#cfcdd2',
-      mediumGray: '#9f9ba5',
-      darkGray: '#655d6d'
+      background: '#f8f9fa',
+      surface: '#ffffff',
+      surfaceHover: '#f1f3f4',
+      border: '#e1e5e9',
+      borderLight: '#f0f2f5',
+      text: '#2c3e50',
+      textSecondary: '#5d6d7e',
+      textMuted: '#85929e',
+      disabled: '#bdc3c7'
+    },
+    status: {
+      success: '#58d68d',
+      warning: '#f39c12',
+      error: '#e74c3c',
+      info: '#5dade2'
     },
     gradient: {
-      background: 'linear-gradient(135deg, #11061e 0%, #1c0514 50%, #27040a 100%)'
+      background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)',
+      card: 'linear-gradient(145deg, #ffffff 0%, #f8f9fa 100%)',
+      primary: 'linear-gradient(135deg, #4a90e2 0%, #5dade2 100%)'
     }
   },
   typography: {
@@ -27,6 +46,8 @@ export const theme = {
       h1: '32px',
       h2: '24px',
       h3: '20px',
+      large: '18px',
+      medium: '16px',
       body: '16px',
       small: '14px'
     },
@@ -38,6 +59,7 @@ export const theme = {
     }
   },
   spacing: {
+    xxs: '4px',
     xs: '8px',
     sm: '16px',
     md: '24px',

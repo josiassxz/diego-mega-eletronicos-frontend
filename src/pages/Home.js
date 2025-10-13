@@ -18,13 +18,7 @@ const fadeIn = keyframes`
 
 const Container = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, 
-    #0D0A1F 0%, 
-    #1A0F2E 30%,
-    #2D1B3D 60%,
-    #7A1E1C 90%,
-    #B22A1F 100%
-  );
+  background: ${theme.colors.gradient.background};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -87,7 +81,7 @@ const Subtitle = styled.h2`
   font-family: 'Montserrat', sans-serif;
   font-size: 1.2rem;
   font-weight: 500;
-  color: #FFFFFF;
+  color: ${theme.colors.neutral.textSecondary};
   margin-bottom: ${theme.spacing.md};
   text-transform: uppercase;
   letter-spacing: 2px;
@@ -106,7 +100,7 @@ const MainTitle = styled.h1`
   font-family: 'Montserrat', sans-serif;
   font-size: 4.5rem;
   font-weight: 800;
-  color: #FFFFFF;
+  color: ${theme.colors.neutral.text};
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -127,7 +121,7 @@ const AccentTitle = styled.h1`
   font-family: 'Montserrat', sans-serif;
   font-size: 4.5rem;
   font-weight: 800;
-  color: #E9442E;
+  color: ${theme.colors.accent.blue};
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 3px;
@@ -153,20 +147,10 @@ const Logo3D = styled.div`
   font-family: 'Montserrat', sans-serif;
   font-size: 2.5rem;
   font-weight: 900;
-  color: #C0C0C0;
+  color: ${theme.colors.neutral.textSecondary};
   text-transform: uppercase;
   letter-spacing: 2px;
-  text-shadow: 
-    0 1px 0 #999,
-    0 2px 0 #888,
-    0 3px 0 #777,
-    0 4px 0 #666,
-    0 5px 0 #555,
-    0 6px 1px rgba(0,0,0,.1),
-    0 0 5px rgba(0,0,0,.1),
-    0 1px 3px rgba(0,0,0,.3),
-    0 3px 5px rgba(0,0,0,.2),
-    0 5px 10px rgba(0,0,0,.25);
+  text-shadow: ${theme.shadows.text};
   transform: perspective(500px) rotateX(15deg);
   text-align: center;
   line-height: 1.2;
@@ -181,8 +165,8 @@ const Logo3D = styled.div`
 `;
 
 const StartButton = styled.button`
-  background: linear-gradient(45deg, #E9442E, #ff6b4a);
-  color: #FFFFFF;
+  background: ${theme.colors.gradient.primary};
+  color: ${theme.colors.neutral.surface};
   border: none;
   padding: 18px 48px;
   font-size: 1.2rem;
@@ -190,7 +174,7 @@ const StartButton = styled.button`
   border-radius: 50px;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 8px 25px rgba(233, 68, 46, 0.4);
+  box-shadow: 0 8px 25px rgba(74, 144, 226, 0.3);
   text-transform: uppercase;
   letter-spacing: 1px;
   margin-top: ${theme.spacing.xl};
@@ -198,8 +182,8 @@ const StartButton = styled.button`
 
   &:hover {
     transform: translateY(-3px);
-    box-shadow: 0 12px 35px rgba(233, 68, 46, 0.6);
-    background: linear-gradient(45deg, #ff6b4a, #E9442E);
+    box-shadow: 0 12px 35px rgba(74, 144, 226, 0.4);
+    background: linear-gradient(135deg, ${theme.colors.accent.blueHover} 0%, ${theme.colors.accent.teal} 100%);
   }
 
   &:active {
@@ -218,19 +202,18 @@ const CarouselSection = styled.footer`
   left: 0;
   width: 100%;
   padding: ${theme.spacing.md} 0;
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${theme.colors.neutral.surfaceHover};
+  border-top: 1px solid ${theme.colors.neutral.border};
   z-index: 1000;
 `;
 
 const CarouselTitle = styled.h3`
   text-align: center;
-  color: #FFFFFF;
+  color: ${theme.colors.neutral.textSecondary};
   font-size: 1rem;
   font-weight: 500;
   margin-bottom: ${theme.spacing.sm};
-  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  text-shadow: none;
   opacity: 0.8;
 `;
 
@@ -258,13 +241,14 @@ const CarouselItem = styled.div`
 const BrandLogo = styled.img`
   height: 40px;
   width: auto;
-  filter: brightness(0) invert(1);
+  filter: brightness(0) invert(0.4);
   opacity: 0.6;
   transition: all 0.3s ease;
 
   &:hover {
-    opacity: 1;
+    opacity: 0.8;
     transform: scale(1.1);
+    filter: brightness(0) invert(0.2);
   }
 
   @media (max-width: ${theme.breakpoints.mobile}) {

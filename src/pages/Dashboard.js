@@ -28,18 +28,18 @@ import { theme } from '../styles/theme';
 
 const PageContainer = styled.div`
   min-height: 100vh;
-  background: ${theme.colors.gradient.background};
+  background: ${theme.colors.neutral.background};
   padding-bottom: ${theme.spacing.xl};
 `;
 
 const Header = styled.header`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${theme.colors.neutral.surface};
+  border-bottom: 1px solid ${theme.colors.neutral.border};
   padding: ${theme.spacing.md} 0;
   position: sticky;
   top: 0;
   z-index: 100;
+  box-shadow: ${theme.shadows.small};
 `;
 
 const HeaderContent = styled.div`
@@ -57,7 +57,7 @@ const HeaderContent = styled.div`
 const Logo = styled.h1`
   font-size: ${theme.typography.sizes.h2};
   font-weight: ${theme.typography.weights.bold};
-  background: linear-gradient(45deg, ${theme.colors.accent.red}, #ff6b4a);
+  background: ${theme.colors.gradient.primary};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -87,12 +87,12 @@ const StatsGrid = styled.div`
 `;
 
 const FiltersContainer = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.large};
   padding: ${theme.spacing.lg};
   margin-bottom: ${theme.spacing.lg};
+  box-shadow: ${theme.shadows.small};
 `;
 
 const FiltersGrid = styled.div`
@@ -110,11 +110,11 @@ const FilterActions = styled.div`
 `;
 
 const TableContainer = styled.div`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.large};
   overflow: hidden;
+  box-shadow: ${theme.shadows.small};
 `;
 
 const TableWrapper = styled.div`
@@ -127,18 +127,18 @@ const Table = styled.table`
   min-width: 800px;
   
   thead {
-    background: rgba(255, 255, 255, 0.05);
+    background: ${theme.colors.neutral.surfaceHover};
   }
   
   th {
     padding: ${theme.spacing.md} ${theme.spacing.lg};
     text-align: left;
     font-weight: ${theme.typography.weights.semiBold};
-    color: ${theme.colors.neutral.white};
+    color: ${theme.colors.neutral.text};
     font-size: ${theme.typography.sizes.small};
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid ${theme.colors.neutral.border};
     white-space: nowrap;
     
     &:nth-child(1) { min-width: 200px; } /* Nome */
@@ -151,8 +151,8 @@ const Table = styled.table`
   
   td {
     padding: ${theme.spacing.md} ${theme.spacing.lg};
-    color: ${theme.colors.neutral.lightGray};
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    color: ${theme.colors.neutral.textSecondary};
+    border-bottom: 1px solid ${theme.colors.neutral.borderLight};
     white-space: nowrap;
     
     &:nth-child(1) { min-width: 200px; }
@@ -167,7 +167,7 @@ const Table = styled.table`
     transition: all 0.3s ease;
     
     &:hover {
-      background: rgba(255, 255, 255, 0.05);
+      background: ${theme.colors.neutral.surfaceHover};
     }
   }
 `;
@@ -187,33 +187,33 @@ const StatusBadge = styled.span`
     switch(props.status) {
       case 'Pendente':
         return `
-          background: rgba(251, 191, 36, 0.2);
-          color: #fbbf24;
+          background: ${theme.colors.status.warningLight};
+          color: ${theme.colors.status.warning};
         `;
       case 'Aprovado':
         return `
-          background: rgba(34, 197, 94, 0.2);
-          color: #22c55e;
+          background: ${theme.colors.status.successLight};
+          color: ${theme.colors.status.success};
         `;
       case 'Recusado':
         return `
-          background: rgba(239, 68, 68, 0.2);
-          color: #ef4444;
+          background: ${theme.colors.status.errorLight};
+          color: ${theme.colors.status.error};
         `;
       case 'Em Análise':
         return `
-          background: rgba(59, 130, 246, 0.2);
-          color: #3b82f6;
+          background: ${theme.colors.status.infoLight};
+          color: ${theme.colors.status.info};
         `;
       case 'Vendido':
         return `
-          background: rgba(168, 85, 247, 0.2);
-          color: #a855f7;
+          background: ${theme.colors.accent.blueLight};
+          color: ${theme.colors.accent.blue};
         `;
       default:
         return `
-          background: rgba(156, 163, 175, 0.2);
-          color: #9ca3af;
+          background: ${theme.colors.neutral.surfaceHover};
+          color: ${theme.colors.neutral.textMuted};
         `;
     }
   }}
@@ -224,7 +224,7 @@ const PaginationContainer = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: ${theme.spacing.md} ${theme.spacing.lg};
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid ${theme.colors.neutral.border};
   
   @media (max-width: ${theme.breakpoints.tablet}) {
     flex-direction: column;
@@ -233,7 +233,7 @@ const PaginationContainer = styled.div`
 `;
 
 const PaginationInfo = styled.div`
-  color: ${theme.colors.neutral.lightGray};
+  color: ${theme.colors.neutral.textSecondary};
   font-size: ${theme.typography.sizes.small};
 `;
 
@@ -245,16 +245,16 @@ const PaginationButtons = styled.div`
 
 const PageButton = styled.button`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  background: ${props => props.active ? theme.colors.accent.red : 'rgba(255, 255, 255, 0.1)'};
-  border: 1px solid ${props => props.active ? theme.colors.accent.red : 'rgba(255, 255, 255, 0.2)'};
+  background: ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.surface};
+  border: 1px solid ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
-  color: ${theme.colors.neutral.white};
+  color: ${props => props.active ? theme.colors.neutral.surface : theme.colors.neutral.text};
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 36px;
   
   &:hover:not(:disabled) {
-    background: ${props => props.active ? theme.colors.accent.redHover : 'rgba(255, 255, 255, 0.15)'};
+    background: ${props => props.active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
   }
   
   &:disabled {
@@ -266,7 +266,7 @@ const PageButton = styled.button`
 const EmptyState = styled.div`
   padding: ${theme.spacing.xxl};
   text-align: center;
-  color: ${theme.colors.neutral.mediumGray};
+  color: ${theme.colors.neutral.textMuted};
 
   svg {
     margin-bottom: ${theme.spacing.md};
@@ -282,10 +282,10 @@ const ActionButtons = styled.div`
 
 const ActionButton = styled.button`
   padding: ${theme.spacing.xs};
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.text};
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
@@ -295,23 +295,23 @@ const ActionButton = styled.button`
   height: 32px;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.2);
+    background: ${theme.colors.neutral.surfaceHover};
     transform: translateY(-1px);
   }
 
   &.view {
     &:hover {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: rgba(59, 130, 246, 0.4);
-      color: #60a5fa;
+      background: ${theme.colors.status.infoLight};
+      border-color: ${theme.colors.status.info};
+      color: ${theme.colors.status.info};
     }
   }
 
   &.edit {
     &:hover {
-      background: rgba(34, 197, 94, 0.2);
-      border-color: rgba(34, 197, 94, 0.4);
-      color: #4ade80;
+      background: ${theme.colors.status.successLight};
+      border-color: ${theme.colors.status.success};
+      color: ${theme.colors.status.success};
     }
   }
 `;
@@ -322,7 +322,7 @@ const LoadingOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: ${theme.colors.neutral.overlay};
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -333,8 +333,8 @@ const LoadingOverlay = styled.div`
 const LoadingSpinner = styled.div`
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: ${theme.colors.accent.red};
+  border: 4px solid ${theme.colors.neutral.border};
+  border-top-color: ${theme.colors.accent.blue};
   border-radius: 50%;
   animation: spin 1s linear infinite;
   
@@ -552,25 +552,25 @@ const Dashboard = () => {
           {/* Cards de Estatísticas */}
           <StatsGrid>
             <StatCard>
-              <Users size={32} color={theme.colors.accent.red} />
+              <Users size={32} color={theme.colors.accent.blue} />
               <StatValue>{estatisticas?.totalClientes || 0}</StatValue>
               <StatLabel>Total de Clientes</StatLabel>
             </StatCard>
             
             <StatCard>
-              <TrendingUp size={32} color="#22c55e" />
+              <TrendingUp size={32} color={theme.colors.status.success} />
               <StatValue>{estatisticas?.clientesHoje || 0}</StatValue>
               <StatLabel>Novos Hoje</StatLabel>
             </StatCard>
             
             <StatCard>
-              <Clock size={32} color="#fbbf24" />
+              <Clock size={32} color={theme.colors.status.warning} />
               <StatValue>{estatisticas?.clientesPendentes || 0}</StatValue>
               <StatLabel>Pendentes</StatLabel>
             </StatCard>
             
             <StatCard>
-              <CheckCircle size={32} color="#22c55e" />
+              <CheckCircle size={32} color={theme.colors.status.success} />
               <StatValue>{estatisticas?.clientesAprovados || 0}</StatValue>
               <StatLabel>Aprovados</StatLabel>
             </StatCard>
@@ -755,7 +755,7 @@ const Dashboard = () => {
                         </PageButton>
                       );
                     } else if (index === pagination.page - 2 || index === pagination.page + 2) {
-                      return <span key={index} style={{ color: theme.colors.neutral.mediumGray }}>...</span>;
+                      return <span key={index} style={{ color: theme.colors.neutral.textMuted }}>...</span>;
                     }
                     return null;
                   })}

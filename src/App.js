@@ -2,6 +2,7 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './contexts/AuthContext';
+import { theme } from './styles/theme';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
@@ -20,7 +21,7 @@ function App() {
         justifyContent: 'center',
         alignItems: 'center',
         height: '100vh',
-        background: 'linear-gradient(135deg, #0D0A1F 0%, #1A0F2E 30%, #2D1B3D 60%, #7A1E1C 90%, #B22A1F 100%)',
+        background: theme.colors.gradient.background,
         color: 'white',
         fontSize: '18px'
       }}>

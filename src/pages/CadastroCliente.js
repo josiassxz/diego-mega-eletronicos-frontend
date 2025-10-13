@@ -11,13 +11,7 @@ import { theme } from '../styles/theme';
 
 const PageContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, 
-    #0D0A1F 0%, 
-    #1A0F2E 30%,
-    #2D1B3D 60%,
-    #7A1E1C 90%,
-    #B22A1F 100%
-  );
+  background: ${theme.colors.gradient.background};
   padding: ${theme.spacing.xl} ${theme.spacing.md};
   position: relative;
   overflow: hidden;
@@ -29,7 +23,7 @@ const PageContainer = styled.div`
     left: 0;
     right: 0;
     bottom: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+    background: radial-gradient(circle at 50% 50%, ${theme.colors.accent.blue}20 0%, transparent 50%);
     pointer-events: none;
   }
 `;
@@ -61,9 +55,9 @@ const Header = styled.header`
 const Title = styled.h1`
   font-size: 2.5rem;
   font-weight: ${theme.typography.weights.bold};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.text};
   margin-bottom: ${theme.spacing.sm};
-  background: linear-gradient(45deg, #ffffff, #a855f7);
+  background: linear-gradient(45deg, ${theme.colors.neutral.text}, ${theme.colors.accent.blue});
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -75,16 +69,16 @@ const Title = styled.h1`
 
 const Subtitle = styled.p`
   font-size: ${theme.typography.sizes.body};
-  color: ${theme.colors.neutral.lightGray};
+  color: ${theme.colors.neutral.textMuted};
 `;
 
 const FormCard = styled.form`
-  background: rgba(255, 255, 255, 0.05);
+  background: ${theme.colors.neutral.surface};
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.large};
   padding: ${theme.spacing.xl};
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: ${theme.shadows.large};
   animation: slideUp 0.6s ease-out;
   
   @keyframes slideUp {
@@ -106,7 +100,7 @@ const FormCard = styled.form`
 const SectionTitle = styled.h2`
   font-size: ${theme.typography.sizes.h2};
   font-weight: ${theme.typography.weights.semiBold};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.text};
   margin-bottom: ${theme.spacing.lg};
   display: flex;
   align-items: center;
@@ -138,7 +132,7 @@ const ActionButtons = styled.div`
   gap: ${theme.spacing.md};
   justify-content: flex-end;
   padding-top: ${theme.spacing.lg};
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid ${theme.colors.neutral.border};
   
   @media (max-width: ${theme.breakpoints.tablet}) {
     flex-direction: column;
@@ -151,7 +145,7 @@ const LoadingOverlay = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.7);
+  background: ${theme.colors.neutral.overlay};
   backdrop-filter: blur(5px);
   display: flex;
   align-items: center;
@@ -162,8 +156,8 @@ const LoadingOverlay = styled.div`
 const LoadingSpinner = styled.div`
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(255, 255, 255, 0.1);
-  border-top-color: ${theme.colors.accent.red};
+  border: 4px solid ${theme.colors.neutral.border};
+  border-top-color: ${theme.colors.accent.blue};
   border-radius: 50%;
   animation: spin 1s linear infinite;
   
@@ -455,10 +449,10 @@ const CadastroCliente = () => {
           <FormGrid style={{ marginBottom: theme.spacing.md }}>
             <FullWidth>
               <div style={{ display: 'flex', gap: theme.spacing.md }}>
-                <div style={{ flex: 1, height: '6px', background: step >= 1 ? theme.colors.accent.red : 'rgba(255,255,255,0.2)', borderRadius: '4px' }} />
-                <div style={{ flex: 1, height: '6px', background: step >= 2 ? theme.colors.accent.red : 'rgba(255,255,255,0.2)', borderRadius: '4px' }} />
-                <div style={{ flex: 1, height: '6px', background: step >= 3 ? theme.colors.accent.red : 'rgba(255,255,255,0.2)', borderRadius: '4px' }} />
-                <div style={{ flex: 1, height: '6px', background: step >= 4 ? theme.colors.accent.red : 'rgba(255,255,255,0.2)', borderRadius: '4px' }} />
+                <div style={{ flex: 1, height: '6px', background: step >= 1 ? theme.colors.accent.blue : theme.colors.neutral.border, borderRadius: '4px' }} />
+                <div style={{ flex: 1, height: '6px', background: step >= 2 ? theme.colors.accent.blue : theme.colors.neutral.border, borderRadius: '4px' }} />
+                <div style={{ flex: 1, height: '6px', background: step >= 3 ? theme.colors.accent.blue : theme.colors.neutral.border, borderRadius: '4px' }} />
+                <div style={{ flex: 1, height: '6px', background: step >= 4 ? theme.colors.accent.blue : theme.colors.neutral.border, borderRadius: '4px' }} />
               </div>
           </FullWidth>
         </FormGrid>
@@ -752,7 +746,7 @@ const CadastroCliente = () => {
               </SectionTitle>
               <FormGrid>
                 <FullWidth>
-                  <p style={{ color: theme.colors.neutral.lightGray, marginBottom: theme.spacing.md }}>
+                  <p style={{ color: theme.colors.neutral.textMuted, marginBottom: theme.spacing.md }}>
                     Informe dados de até três pessoas que possam confirmar suas informações. Pelo menos uma referência completa é obrigatória.
                   </p>
                   {errors.referencias && <ErrorMessage>{errors.referencias}</ErrorMessage>}
@@ -760,7 +754,7 @@ const CadastroCliente = () => {
                 
                 {/* Primeira Referência */}
                 <FullWidth>
-                  <h3 style={{ color: theme.colors.neutral.white, marginBottom: theme.spacing.md, fontSize: '1.1rem' }}>
+                  <h3 style={{ color: theme.colors.neutral.text, marginBottom: theme.spacing.md, fontSize: '1.1rem' }}>
                     1. Primeira Referência
                   </h3>
                 </FullWidth>
@@ -801,8 +795,8 @@ const CadastroCliente = () => {
                 
                 {/* Segunda Referência */}
                 <FullWidth>
-                  <h3 style={{ color: theme.colors.neutral.white, marginBottom: theme.spacing.md, fontSize: '1.1rem', marginTop: theme.spacing.lg }}>
-                    2. Segunda Referência
+                  <h3 style={{ color: theme.colors.neutral.text, marginBottom: theme.spacing.md, fontSize: '1.1rem', marginTop: theme.spacing.lg }}>
+                    2. Segunda Referência (Opcional)
                   </h3>
                 </FullWidth>
                 <FormGroup>
@@ -842,8 +836,8 @@ const CadastroCliente = () => {
                 
                 {/* Terceira Referência */}
                 <FullWidth>
-                  <h3 style={{ color: theme.colors.neutral.white, marginBottom: theme.spacing.md, fontSize: '1.1rem', marginTop: theme.spacing.lg }}>
-                    3. Terceira Referência
+                  <h3 style={{ color: theme.colors.neutral.text, marginBottom: theme.spacing.md, fontSize: '1.1rem', marginTop: theme.spacing.lg }}>
+                    3. Terceira Referência (Opcional)
                   </h3>
                 </FullWidth>
                 <FormGroup>

@@ -28,12 +28,12 @@ export const Grid = styled.div`
 `;
 
 export const Section = styled.section`
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.large};
   padding: ${theme.spacing.lg};
   margin-bottom: ${theme.spacing.lg};
+  box-shadow: ${theme.shadows.small};
 `;
 
 export const FlexContainer = styled.div`

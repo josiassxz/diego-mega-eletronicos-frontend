@@ -12,7 +12,7 @@ export const FormGroup = styled.div`
 export const Label = styled.label`
   font-size: ${theme.typography.sizes.small};
   font-weight: ${theme.typography.weights.medium};
-  color: ${theme.colors.neutral.lightGray};
+  color: ${theme.colors.neutral.textSecondary};
   display: flex;
   align-items: center;
   gap: ${theme.spacing.xs};
@@ -21,22 +21,21 @@ export const Label = styled.label`
 export const Input = styled.input`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   font-size: ${theme.typography.sizes.body};
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.text};
   transition: all 0.3s ease;
   
   &::placeholder {
-    color: ${theme.colors.neutral.mediumGray};
+    color: ${theme.colors.neutral.textMuted};
   }
   
   &:focus {
     outline: none;
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(168, 85, 247, 0.6);
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+    background: ${theme.colors.neutral.surface};
+    border-color: ${theme.colors.accent.blue};
+    box-shadow: 0 0 0 3px ${theme.colors.accent.blueLight};
   }
   
   &:disabled {
@@ -45,11 +44,11 @@ export const Input = styled.input`
   }
   
   ${props => props.$error && `
-    border-color: #ef4444;
+    border-color: ${theme.colors.status.error};
     
     &:focus {
-      border-color: #ef4444;
-      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+      border-color: ${theme.colors.status.error};
+      box-shadow: 0 0 0 3px ${theme.colors.status.errorLight};
     }
   `}
 `;
@@ -57,28 +56,27 @@ export const Input = styled.input`
 export const Select = styled.select`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   font-size: ${theme.typography.sizes.body};
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.text};
   cursor: pointer;
   transition: all 0.3s ease;
   
   option {
-    background: ${theme.colors.primary.dark};
-    color: ${theme.colors.neutral.white};
+    background: ${theme.colors.neutral.surface};
+    color: ${theme.colors.neutral.text};
   }
   
   &:focus {
     outline: none;
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(168, 85, 247, 0.6);
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+    background: ${theme.colors.neutral.surface};
+    border-color: ${theme.colors.accent.blue};
+    box-shadow: 0 0 0 3px ${theme.colors.accent.blueLight};
   }
   
   ${props => props.$error && `
-    border-color: #ef4444;
+    border-color: ${theme.colors.status.error};
   `}
 `;
 
@@ -92,7 +90,7 @@ export const InputGroup = styled.div`
   svg {
     position: absolute;
     left: ${theme.spacing.sm};
-    color: ${theme.colors.neutral.mediumGray};
+    color: ${theme.colors.neutral.textMuted};
     pointer-events: none;
   }
   
@@ -103,7 +101,7 @@ export const InputGroup = styled.div`
 
 export const ErrorMessage = styled.span`
   font-size: ${theme.typography.sizes.small};
-  color: #ef4444;
+  color: ${theme.colors.status.error};
   margin-top: ${theme.spacing.xs};
 `;
 
@@ -111,27 +109,26 @@ export const TextArea = styled.textarea`
   padding: ${theme.spacing.sm} ${theme.spacing.md};
   font-size: ${theme.typography.sizes.body};
   font-family: ${theme.typography.fontFamily};
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.text};
   transition: all 0.3s ease;
   resize: vertical;
   min-height: 100px;
-  
+
   &::placeholder {
-    color: ${theme.colors.neutral.mediumGray};
+    color: ${theme.colors.neutral.textMuted};
   }
-  
+
   &:focus {
     outline: none;
-    background: rgba(255, 255, 255, 0.15);
-    border-color: rgba(168, 85, 247, 0.6);
-    box-shadow: 0 0 0 3px rgba(168, 85, 247, 0.1);
+    background: ${theme.colors.neutral.surface};
+    border-color: ${theme.colors.accent.blue};
+    box-shadow: 0 0 0 3px ${theme.colors.accent.blueLight};
   }
   
   ${props => props.$error && `
-    border-color: #ef4444;
+    border-color: ${theme.colors.status.error};
   `}
 `;

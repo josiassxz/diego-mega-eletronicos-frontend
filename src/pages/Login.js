@@ -44,7 +44,7 @@ const LoginCard = styled.div`
   border-radius: ${theme.borderRadius.large};
   padding: ${theme.spacing.xl};
   width: 100%;
-  max-width: 420px;
+  max-width: 600px;
   box-shadow: ${theme.shadows.large};
   position: relative;
   z-index: 1;
@@ -85,7 +85,7 @@ const LoginHeader = styled.div`
 const LoginTitle = styled.h1`
   font-size: ${theme.typography.sizes.h1};
   font-weight: ${theme.typography.weights.bold};
-  color: ${theme.colors.neutral.white};
+  color: ${theme.colors.neutral.black};
   margin-bottom: ${theme.spacing.sm};
   
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -98,7 +98,7 @@ const LoginTitle = styled.h1`
 `;
 
 const LoginSubtitle = styled.p`
-  color: ${theme.colors.neutral.lightGray};
+  color: ${theme.colors.neutral.black};
   font-size: ${theme.typography.sizes.body};
   
   @media (max-width: ${theme.breakpoints.mobile}) {
@@ -113,7 +113,7 @@ const TogglePasswordButton = styled.button`
   transform: translateY(-50%);
   background: none;
   border: none;
-  color: ${theme.colors.neutral.mediumGray};
+  color: ${theme.colors.neutral.black};
   cursor: pointer;
   padding: ${theme.spacing.xs};
   border-radius: ${theme.borderRadius.small};
@@ -125,8 +125,8 @@ const TogglePasswordButton = styled.button`
   min-height: 40px;
   
   &:hover {
-    color: ${theme.colors.neutral.lightGray};
-    background: rgba(255, 255, 255, 0.1);
+    color: ${theme.colors.neutral.mediumGray};
+    background: ${theme.colors.neutral.lightGray};
   }
   
   &:focus {

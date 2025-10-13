@@ -17,7 +17,7 @@ const VideoContainer = styled.div`
   max-width: 400px;
   border-radius: ${theme.borderRadius.large};
   overflow: hidden;
-  background: ${theme.colors.primary.dark};
+  background: ${theme.colors.neutral.surfaceHover};
   
   video, canvas {
     width: 100%;
@@ -116,7 +116,7 @@ export const CameraCapture = ({ onCapture, preview, onRemove }) => {
         {capturing ? (
           <video ref={videoRef} autoPlay playsInline />
         ) : (
-          <div style={{ padding: theme.spacing.xl, textAlign: 'center', color: theme.colors.neutral.mediumGray }}>
+          <div style={{ padding: theme.spacing.xl, textAlign: 'center', color: theme.colors.neutral.textMuted }}>
             <Camera size={48} />
             <p>Câmera desativada</p>
           </div>
