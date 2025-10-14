@@ -755,13 +755,10 @@ const CadastroAparelhos = () => {
     setLoadingClientes(true);
     try {
       const response = await clientService.getAllClients();
-      // Filtrar clientes aprovados e vendidos (que podem comprar novos aparelhos)
-      const clientesValidos = response.data.filter(cliente => {
-        const status = cliente.status?.toLowerCase();
-        return status === 'aprovado' || status === 'vendido';
-      });
-      setClientes(clientesValidos);
-      setClientesFiltrados(clientesValidos);
+      // Mostrar todos os clientes disponíveis
+      const todosClientes = response.data || [];
+      setClientes(todosClientes);
+      setClientesFiltrados(todosClientes);
     } catch (error) {
       console.error('Erro ao carregar clientes:', error);
       showAlert('error', 'Erro ao carregar lista de clientes');
