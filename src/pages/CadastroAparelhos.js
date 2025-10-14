@@ -391,135 +391,155 @@ const LoadingSpinner = styled.div`
 
 // Styled components para abas
 const TabContainer = styled.div`
-  background: ${theme.colors.neutral.surface};
-  border: 1px solid ${theme.colors.neutral.border};
-  border-radius: ${theme.borderRadius.large};
-  box-shadow: ${theme.shadows.small};
-  overflow: hidden;
+  margin-bottom: ${theme.spacing.xl};
 `;
 
 const TabButtons = styled.div`
   display: flex;
-  border-bottom: 1px solid ${theme.colors.neutral.border};
-  background: ${theme.colors.neutral.surfaceHover};
+  gap: ${theme.spacing.sm};
+  margin-bottom: ${theme.spacing.lg};
 `;
 
 const TabButton = styled.button`
-  flex: 1;
-  padding: ${theme.spacing.lg};
-  border: none;
-  background: ${props => props.active ? theme.colors.neutral.surface : 'transparent'};
-  color: ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.textSecondary};
-  font-weight: ${props => props.active ? theme.typography.weights.semiBold : theme.typography.weights.medium};
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  background: ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.surface};
+  color: ${props => props.active ? theme.colors.neutral.white : theme.colors.neutral.text};
+  border: 1px solid ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.border};
+  border-radius: ${theme.borderRadius.medium};
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: ${theme.spacing.sm};
-  border-bottom: 3px solid ${props => props.active ? theme.colors.accent.blue : 'transparent'};
-
+  font-weight: ${theme.typography.weights.medium};
+  
   &:hover {
-    background: ${theme.colors.neutral.surface};
-    color: ${theme.colors.accent.blue};
+    background: ${props => props.active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
   }
 `;
 
 // Styled components para filtros
 const FiltersContainer = styled.div`
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
+  border-radius: ${theme.borderRadius.large};
   padding: ${theme.spacing.lg};
-  border-bottom: 1px solid ${theme.colors.neutral.border};
+  margin-bottom: ${theme.spacing.lg};
+  box-shadow: ${theme.shadows.small};
 `;
 
 const FiltersGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: ${theme.spacing.md};
-  margin-bottom: ${theme.spacing.lg};
+  margin-bottom: ${theme.spacing.md};
 `;
 
 const FilterActions = styled.div`
   display: flex;
-  gap: ${theme.spacing.md};
+  gap: ${theme.spacing.sm};
   justify-content: flex-end;
+  flex-wrap: wrap;
 `;
 
 // Styled components para tabela
 const TableContainer = styled.div`
-  padding: ${theme.spacing.lg};
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
+  border-radius: ${theme.borderRadius.large};
+  overflow: hidden;
+  box-shadow: ${theme.shadows.small};
 `;
 
 const TableWrapper = styled.div`
   overflow-x: auto;
-  border: 1px solid ${theme.colors.neutral.border};
-  border-radius: ${theme.borderRadius.medium};
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  background: ${theme.colors.neutral.surface};
-
-  th, td {
-    padding: ${theme.spacing.md};
-    text-align: left;
-    border-bottom: 1px solid ${theme.colors.neutral.border};
-  }
-
-  th {
+  min-width: 800px;
+  
+  thead {
     background: ${theme.colors.neutral.surfaceHover};
+  }
+  
+  th {
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    text-align: left;
     font-weight: ${theme.typography.weights.semiBold};
     color: ${theme.colors.neutral.text};
-    position: sticky;
-    top: 0;
-    z-index: 1;
+    font-size: ${theme.typography.sizes.small};
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid ${theme.colors.neutral.border};
+    white-space: nowrap;
   }
-
+  
   td {
-    color: ${theme.colors.neutral.text};
+    padding: ${theme.spacing.md} ${theme.spacing.lg};
+    color: ${theme.colors.neutral.textSecondary};
+    border-bottom: 1px solid ${theme.colors.neutral.borderLight};
+    white-space: nowrap;
   }
-
-  tr:hover {
-    background: ${theme.colors.neutral.surfaceHover};
-  }
-
-  tr:last-child td {
-    border-bottom: none;
+  
+  tbody tr {
+    transition: all 0.3s ease;
+    
+    &:hover {
+      background: ${theme.colors.neutral.surfaceHover};
+    }
   }
 `;
 
 const ActionButtons = styled.div`
   display: flex;
   gap: ${theme.spacing.xs};
+  align-items: center;
 `;
 
 const ActionButton = styled.button`
   padding: ${theme.spacing.xs};
-  border: none;
-  border-radius: ${theme.borderRadius.small};
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
+  border-radius: ${theme.borderRadius.medium};
+  color: ${theme.colors.neutral.text};
   cursor: pointer;
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.3s ease;
+  min-width: 32px;
+  height: 32px;
 
-  ${props => props.variant === 'edit' && `
-    background: ${theme.colors.accent.blue};
-    color: white;
-    
-    &:hover {
-      background: ${theme.colors.accent.blueHover};
-    }
-  `}
+  &:hover {
+    background: ${theme.colors.neutral.surfaceHover};
+    transform: translateY(-1px);
+  }
 
-  ${props => props.variant === 'delete' && `
-    background: ${theme.colors.status.error};
-    color: white;
-    
+  &.view {
     &:hover {
-      background: ${theme.colors.status.errorHover || '#dc2626'};
+      background: ${theme.colors.status.infoLight};
+      border-color: ${theme.colors.status.info};
+      color: ${theme.colors.status.info};
     }
-  `}
+  }
+
+  &.edit {
+    &:hover {
+      background: ${theme.colors.status.successLight};
+      border-color: ${theme.colors.status.success};
+      color: ${theme.colors.status.success};
+    }
+  }
+
+  &.delete {
+    &:hover {
+      background: ${theme.colors.status.errorLight};
+      border-color: ${theme.colors.status.error};
+      color: ${theme.colors.status.error};
+    }
+  }
 `;
 
 const CadastroAparelhos = () => {
@@ -907,6 +927,27 @@ const CadastroAparelhos = () => {
     }
   };
 
+  // Cancelar edição
+  const handleCancelEdit = () => {
+    setEditingAparelho(null);
+    setFormData({
+      imei: '',
+      modelo: '',
+      marca: '',
+      cpfCliente: '',
+      empresaId: '',
+      valorParcelado: '',
+      valorTotal: '',
+      parcelas: '1',
+      valorParcela: '',
+      diasVencimento: '30',
+      dataVencimento: ''
+    });
+    setClienteSelecionado(null);
+    setActiveTab('listagem');
+    setAlert({ show: false, type: '', message: '' });
+  };
+
   const applyFilters = () => {
     let filtered = aparelhos;
 
@@ -986,11 +1027,13 @@ const CadastroAparelhos = () => {
       <Sidebar />
       <MainContent>
         <Header>
-          <Title>
-            <Smartphone size={28} />
-            Gestão de Aparelhos
-          </Title>
-          <Subtitle>Cadastre e gerencie aparelhos para parcelamento</Subtitle>
+          <div>
+            <Title>
+              <Smartphone size={28} />
+              Gestão de Aparelhos
+            </Title>
+            <Subtitle>Cadastre e gerencie aparelhos para parcelamento</Subtitle>
+          </div>
         </Header>
 
         <TabContainer>
@@ -1011,17 +1054,16 @@ const CadastroAparelhos = () => {
             </TabButton>
           </TabButtons>
 
-          {alert.show && (
-            <Alert type={alert.type}>
-              {alert.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
-              {alert.message}
-            </Alert>
-          )}
-
           {activeTab === 'cadastro' && (
             <Container>
+              {alert.show && (
+                <Alert type={alert.type}>
+                  {alert.type === 'success' ? <CheckCircle size={20} /> : <AlertCircle size={20} />}
+                  {alert.message}
+                </Alert>
+              )}
 
-          <FormContainer>
+              <FormContainer>
             <form onSubmit={handleSubmit}>
               <FormGrid>
                 <FormSection>
@@ -1219,12 +1261,23 @@ const CadastroAparelhos = () => {
                   <RotateCcw size={20} />
                   Limpar
                 </Button>
+                {editingAparelho && (
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={handleCancelEdit}
+                    disabled={loading}
+                  >
+                    <X size={20} />
+                    Cancelar
+                  </Button>
+                )}
                 <Button
                   type="submit"
                   disabled={loading}
                 >
                   <Save size={20} />
-                  {loading ? 'Salvando...' : (isEditing ? 'Atualizar Aparelho' : 'Salvar Aparelho')}
+                  {loading ? 'Salvando...' : (editingAparelho ? 'Atualizar Aparelho' : 'Salvar Aparelho')}
                 </Button>
               </FormActions>
             </form>
@@ -1309,9 +1362,9 @@ const CadastroAparelhos = () => {
                               <td>{aparelho.imei}</td>
                               <td>{aparelho.modelo}</td>
                               <td>{aparelho.marca}</td>
-                              <td>{aparelho.cliente?.nome || 'N/A'}</td>
-                              <td>{aparelho.empresa?.nome || 'N/A'}</td>
-                              <td>{formatCurrencyDisplay(aparelho.valor)}</td>
+                              <td>{aparelho.clienteNome || 'N/A'}</td>
+                              <td>{aparelho.empresaNome || 'N/A'}</td>
+                              <td>{formatCurrencyDisplay(aparelho.valorTotal)}</td>
                               <td>
                                 <StatusBadge status={aparelho.status}>
                                   {aparelho.status}
@@ -1321,14 +1374,14 @@ const CadastroAparelhos = () => {
                               <td>
                                 <ActionButtons>
                                   <ActionButton
-                                    color="blue"
+                                    className="edit"
                                     onClick={() => handleEditAparelho(aparelho)}
                                     title="Editar"
                                   >
                                     <Edit size={16} />
                                   </ActionButton>
                                   <ActionButton
-                                    color="red"
+                                    className="delete"
                                     onClick={() => handleDeleteAparelho(aparelho.id)}
                                     title="Excluir"
                                   >

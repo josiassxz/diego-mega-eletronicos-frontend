@@ -634,10 +634,10 @@ const ListagemAparelhos = () => {
                             <td>{formatImei(aparelho.imei)}</td>
                             <td>{aparelho.modelo}</td>
                             <td>{aparelho.marca}</td>
-                            <td>{getClienteNome(aparelho.clienteId)}</td>
-                            <td>{getEmpresaNome(aparelho.empresaId)}</td>
+                            <td>{aparelho.clienteNome || 'N/A'}</td>
+                            <td>{aparelho.empresaNome || 'N/A'}</td>
                             <td>{formatCurrency(aparelho.valorTotal)}</td>
-                            <td>{aparelho.numeroParcelas}x de {formatCurrency(aparelho.valorParcela)}</td>
+                            <td>{aparelho.parcelas}x de {formatCurrency(aparelho.valorParcela)}</td>
                             <td>{formatDate(aparelho.dataVencimento)}</td>
                             <td>
                               <StatusBadge status={aparelho.status}>
