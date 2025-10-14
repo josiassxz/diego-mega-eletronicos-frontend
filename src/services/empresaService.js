@@ -125,5 +125,39 @@ export const empresaService = {
     }
     
     return cnpj;
+  },
+
+  // Formatar telefone fixo (10 dígitos)
+  formatarTelefone: (telefone) => {
+    const telefoneLimpo = telefone.replace(/\D/g, '');
+    
+    if (telefoneLimpo.length <= 10) {
+      return telefoneLimpo.replace(
+        /^(\d{2})(\d{4})(\d{4})$/,
+        '($1) $2-$3'
+      );
+    }
+    
+    return telefone;
+  },
+
+  // Formatar celular (11 dígitos)
+  formatarCelular: (celular) => {
+    const celularLimpo = celular.replace(/\D/g, '');
+    
+    if (celularLimpo.length <= 11) {
+      return celularLimpo.replace(
+        /^(\d{2})(\d{5})(\d{4})$/,
+        '($1) $2-$3'
+      );
+    }
+    
+    return celular;
+  },
+
+  // Validar email
+  validarEmail: (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   }
 };

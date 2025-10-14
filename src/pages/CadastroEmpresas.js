@@ -422,9 +422,13 @@ const CadastroEmpresas = () => {
     
     let formattedValue = value;
     
-    // Formatação automática do CNPJ
+    // Formatação automática dos campos
     if (name === 'cnpj') {
       formattedValue = empresaService.formatarCnpj(value);
+    } else if (name === 'telefone') {
+      formattedValue = empresaService.formatarTelefone(value);
+    } else if (name === 'celular') {
+      formattedValue = empresaService.formatarCelular(value);
     }
     
     setFormData(prev => ({
@@ -543,8 +547,8 @@ const CadastroEmpresas = () => {
       cnpj: empresaService.formatarCnpj(empresa.cnpj) || '',
       inscricaoEstadual: empresa.inscricaoEstadual || '',
       inscricaoMunicipal: empresa.inscricaoMunicipal || '',
-      telefone: empresa.telefone || '',
-      celular: empresa.celular || '',
+      telefone: empresa.telefone ? empresaService.formatarTelefone(empresa.telefone) : '',
+      celular: empresa.celular ? empresaService.formatarCelular(empresa.celular) : '',
       email: empresa.email || '',
       website: empresa.website || '',
       cep: empresa.cep || '',
@@ -637,6 +641,16 @@ const CadastroEmpresas = () => {
         return;
       }
 
+      // Validar email se preenchido
+      if (formData.email && !empresaService.validarEmail(formData.email)) {
+        setAlert({
+          show: true,
+          type: 'error',
+          message: 'E-mail inválido. Por favor, verifique o endereço digitado.'
+        });
+        return;
+      }
+
       // Preparar dados para envio
       const empresaData = {
         razaoSocial: formData.razaoSocial,
@@ -644,8 +658,8 @@ const CadastroEmpresas = () => {
         cnpj: formData.cnpj.replace(/\D/g, ''), // Remove formatação
         inscricaoEstadual: formData.inscricaoEstadual || null,
         inscricaoMunicipal: formData.inscricaoMunicipal || null,
-        telefone: formData.telefone || null,
-        celular: formData.celular || null,
+        telefone: formData.telefone ? formData.telefone.replace(/\D/g, '') : null, // Remove formatação
+        celular: formData.celular ? formData.celular.replace(/\D/g, '') : null, // Remove formatação
         email: formData.email || null,
         website: formData.website || null,
         cep: formData.cep.replace(/\D/g, ''), // Remove formatação
@@ -822,6 +836,7 @@ const CadastroEmpresas = () => {
                             value={formData.cnpj}
                             onChange={handleInputChange}
                             placeholder="00.000.000/0000-00"
+                            maxLength="18"
                             required
                           />
                         </FormGroup>
@@ -862,6 +877,7 @@ const CadastroEmpresas = () => {
                             value={formData.telefone}
                             onChange={handleInputChange}
                             placeholder="(00) 0000-0000"
+                            maxLength="14"
                           />
                         </FormGroup>
 
@@ -873,6 +889,7 @@ const CadastroEmpresas = () => {
                             value={formData.celular}
                             onChange={handleInputChange}
                             placeholder="(00) 00000-0000"
+                            maxLength="15"
                           />
                         </FormGroup>
 

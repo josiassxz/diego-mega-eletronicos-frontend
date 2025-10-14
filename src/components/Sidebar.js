@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { 
   Home, 
   Building2, 
-  Settings, 
+  Smartphone, 
   LogOut,
   Menu,
   X,
@@ -218,9 +218,9 @@ const Sidebar = () => {
       path: '/cadastro-empresas'
     },
     {
-      icon: Settings,
-      label: 'Configurações',
-      path: '/configuracoes'
+      icon: Smartphone,
+      label: 'Gestão de Aparelhos',
+      path: '/cadastro-aparelhos'
     }
   ];
 

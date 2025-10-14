@@ -10,6 +10,7 @@ import CadastroCliente from './pages/CadastroCliente';
 import EditarCliente from './pages/EditarCliente';
 import ClienteDetalhes from './pages/ClienteDetalhes';
 import CadastroEmpresas from './pages/CadastroEmpresas';
+import CadastroAparelhos from './pages/CadastroAparelhos';
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
@@ -63,6 +64,14 @@ function App() {
       <Route 
         path="/cadastro-empresas" 
         element={isAuthenticated ? <CadastroEmpresas /> : <Navigate to="/login" />} 
+      />
+      <Route 
+        path="/cadastro-aparelhos" 
+        element={isAuthenticated ? <CadastroAparelhos /> : <Navigate to="/login" />} 
+      />
+      <Route 
+        path="/cadastro-aparelhos/:id" 
+        element={isAuthenticated ? <CadastroAparelhos /> : <Navigate to="/login" />} 
       />
     </Routes>
   );
