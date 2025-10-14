@@ -593,16 +593,6 @@ const EditarAparelho = () => {
 
             <FormActions>
               <Button
-                type="button"
-                variant="secondary"
-                onClick={handleReset}
-                disabled={saving}
-              >
-                <RotateCcw size={20} />
-                Resetar
-              </Button>
-              
-              <Button
                 type="submit"
                 variant="primary"
                 disabled={saving}
