@@ -1,5 +1,5 @@
 
-import api from './api';
+import api, { API_BASE_URL } from './api';
 
 export const clientService = {
   // Listar todos os clientes
@@ -226,7 +226,7 @@ export const clientService = {
 
   // Obter URL de visualização de arquivo
   getArquivoUrl: (nomeArquivo) => {
-    return `http://localhost:8080/api/clientes/uploads/${nomeArquivo}`;
+    return `${API_BASE_URL}/clientes/uploads/${nomeArquivo}`;
   },
 
   // Deletar foto do documento
