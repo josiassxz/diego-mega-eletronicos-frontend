@@ -473,7 +473,7 @@ const Dashboard = () => {
   };
 
   const editarCliente = (cliente) => {
-    navigate(`/cliente/${cliente.id}/editar`);
+    navigate(`/editar-cliente/${cliente.id}`);
   };
 
 

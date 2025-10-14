@@ -680,7 +680,7 @@ const ClienteDetalhes = () => {
                   </Button>
                 </>
               ) : (
-                <Button onClick={() => navigate(`/cliente/${id}/editar`)}>
+                <Button onClick={() => navigate(`/editar-cliente/${id}`)}>
                   <Edit size={16} />
                   Editar
                 </Button>

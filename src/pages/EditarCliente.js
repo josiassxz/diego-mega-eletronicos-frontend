@@ -153,8 +153,11 @@ const EditarCliente = () => {
   const loadClient = async () => {
     try {
       setPageLoading(true);
+      console.log('Carregando cliente com ID:', id);
       const response = await clientService.getClientById(id);
+      console.log('Resposta do servidor:', response);
       const client = response.data;
+      console.log('Dados do cliente:', client);
       
       setFormData({
         nome: client.nome || '',
@@ -191,6 +194,8 @@ const EditarCliente = () => {
         referencia3Relacao: client.referencia3Relacao || '',
         referencia3Whatsapp: client.referencia3Whatsapp || ''
       });
+
+      console.log('FormData definido com sucesso');
 
       // Carregar fotos existentes se houver
       if (client.fotoDocumento || client.fotoSelfie) {
