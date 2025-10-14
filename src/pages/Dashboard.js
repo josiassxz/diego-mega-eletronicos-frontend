@@ -20,6 +20,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { clientService } from '../services/clientService';
+import Sidebar from '../components/Sidebar';
 import { Container } from '../components/ui/Container';
 import { Button, IconButton } from '../components/ui/Button';
 import { Input, Select, FormGroup } from '../components/ui/Input';
@@ -29,7 +30,7 @@ import { theme } from '../styles/theme';
 const PageContainer = styled.div`
   min-height: 100vh;
   background: ${theme.colors.neutral.background};
-  padding-bottom: ${theme.spacing.xl};
+  display: flex;
 `;
 
 const Header = styled.header`
@@ -71,7 +72,14 @@ const HeaderActions = styled.div`
 `;
 
 const MainContent = styled.main`
-  padding: ${theme.spacing.xl} 0;
+  flex: 1;
+  margin-left: 280px;
+  padding: ${theme.spacing.xl};
+  
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    margin-left: 0;
+    padding: ${theme.spacing.lg};
+  }
 `;
 
 const StatsGrid = styled.div`
@@ -530,23 +538,7 @@ const Dashboard = () => {
   
   return (
     <PageContainer>
-      <Header>
-        <Container>
-          <HeaderContent>
-            <Logo>MEGA ELETRÔNICOS GO</Logo>
-            <HeaderActions>
-              <IconButton onClick={handleRefresh} title="Atualizar">
-                <RefreshCw size={20} />
-              </IconButton>
-              <Button variant="secondary" onClick={handleLogout}>
-                <LogOut size={20} />
-                Sair
-              </Button>
-            </HeaderActions>
-          </HeaderContent>
-        </Container>
-      </Header>
-      
+      <Sidebar />
       <MainContent>
         <Container>
           {/* Cards de Estatísticas */}

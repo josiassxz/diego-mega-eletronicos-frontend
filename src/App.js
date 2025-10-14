@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 import CadastroCliente from './pages/CadastroCliente';
 import EditarCliente from './pages/EditarCliente';
 import ClienteDetalhes from './pages/ClienteDetalhes';
+import CadastroEmpresas from './pages/CadastroEmpresas';
 
 function App() {
   const { isAuthenticated, loading } = useAuth();
@@ -47,10 +48,10 @@ function App() {
         path="/dashboard" 
         element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
       />
-      <Route 
+      {/* <Route 
         path="/cliente/:id" 
         element={isAuthenticated ? <ClienteDetalhes /> : <Navigate to="/login" />} 
-      />
+      /> */}
       <Route 
         path="/cliente/:id/editar" 
         element={isAuthenticated ? <ClienteDetalhes /> : <Navigate to="/login" />} 
@@ -58,6 +59,10 @@ function App() {
       <Route 
         path="/editar-cliente/:id" 
         element={isAuthenticated ? <EditarCliente /> : <Navigate to="/login" />} 
+      />
+      <Route 
+        path="/cadastro-empresas" 
+        element={isAuthenticated ? <CadastroEmpresas /> : <Navigate to="/login" />} 
       />
     </Routes>
   );
