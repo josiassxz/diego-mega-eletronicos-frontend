@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { Smartphone, Save, RotateCcw, AlertCircle, CheckCircle, Eye, Edit, Trash2, Plus, Search, Filter, User, Building2 } from 'lucide-react';
+import { Smartphone, Save, RotateCcw, AlertCircle, CheckCircle, Eye, Edit, Trash2, Plus, Search, Filter, User, Building2, ChevronLeft, ChevronRight } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
@@ -92,8 +92,8 @@ const TabButtons = styled.div`
 const TabButton = styled.button`
   flex: 1;
   padding: ${theme.spacing.md} ${theme.spacing.lg};
-  background: ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.surface};
-  color: ${props => props.active ? theme.colors.neutral.white : theme.colors.neutral.text};
+  background: ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.surface};
+  color: ${props => props.$active ? theme.colors.neutral.white : theme.colors.neutral.text};
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -104,7 +104,7 @@ const TabButton = styled.button`
   font-weight: ${theme.typography.weights.medium};
   
   &:hover {
-    background: ${props => props.active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
+    background: ${props => props.$active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
   }
 `;
 
@@ -303,14 +303,67 @@ const LoadingOverlay = styled.div`
   z-index: 1000;
 `;
 
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${theme.spacing.md} ${theme.spacing.lg};
+  border-top: 1px solid ${theme.colors.neutral.border};
+
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    flex-direction: column;
+    gap: ${theme.spacing.md};
+  }
+`;
+
+const PaginationInfo = styled.div`
+  color: ${theme.colors.neutral.textSecondary};
+  font-size: ${theme.typography.sizes.small};
+`;
+
+const PaginationButtons = styled.div`
+  display: flex;
+  gap: ${theme.spacing.xs};
+  align-items: center;
+`;
+
+const PageButton = styled.button`
+  padding: ${theme.spacing.xs} ${theme.spacing.sm};
+  background: ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.surface};
+  color: ${props => props.$active ? theme.colors.neutral.white : theme.colors.neutral.text};
+  border: 1px solid ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.border};
+  border-radius: ${theme.borderRadius.medium};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 36px;
+
+  &:hover:not(:disabled) {
+    background: ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.surfaceHover};
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+`;
+
 const ListagemAparelhos = () => {
   const navigate = useNavigate();
+  
   const [aparelhos, setAparelhos] = useState([]);
   const [clientes, setClientes] = useState([]);
   const [empresas, setEmpresas] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loadingList, setLoadingList] = useState(false);
-  const [alert, setAlert] = useState({ show: false, type: '', message: '' });
+  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
+  
+  // Estado de paginação
+  const [pagination, setPagination] = useState({
+    page: 0,
+    size: 20,
+    totalPages: 0,
+    totalElements: 0
+  });
   
   const [filters, setFilters] = useState({
     imei: '',
@@ -321,24 +374,55 @@ const ListagemAparelhos = () => {
     status: ''
   });
 
-  // Carregar dados iniciais
   useEffect(() => {
     loadAparelhos();
     loadClientes();
     loadEmpresas();
-  }, []);
+  }, [pagination.page]);
 
   const loadAparelhos = async () => {
     setLoadingList(true);
     try {
-      const response = await aparelhoService.getAllAparelhos();
-      setAparelhos(response.data);
+      const params = {
+        page: pagination.page,
+        size: pagination.size,
+        sortBy: 'dataCadastro',
+        sortDir: 'DESC'
+      };
+      
+      // Adicionar filtros se estiverem preenchidos
+      if (filters.imei) params.imei = filters.imei;
+      if (filters.modelo) params.modelo = filters.modelo;
+      if (filters.marca) params.marca = filters.marca;
+      if (filters.clienteNome) params.clienteNome = filters.clienteNome;
+      if (filters.empresaNome) params.empresaNome = filters.empresaNome;
+      if (filters.status) params.status = filters.status;
+      
+      const response = await aparelhoService.buscarComFiltros(params);
+      
+      // Verificar se a resposta tem estrutura de paginação
+      if (response.data.content) {
+        setAparelhos(response.data.content);
+        setPagination(prev => ({
+          ...prev,
+          totalPages: response.data.totalPages,
+          totalElements: response.data.totalElements
+        }));
+      } else {
+        // Fallback para resposta sem paginação
+        setAparelhos(response.data);
+        setPagination(prev => ({
+          ...prev,
+          totalPages: 1,
+          totalElements: response.data.length
+        }));
+      }
     } catch (error) {
       console.error('Erro ao carregar aparelhos:', error);
       setAlert({
         show: true,
-        type: 'error',
-        message: 'Erro ao carregar aparelhos.'
+        message: 'Erro ao carregar aparelhos',
+        type: 'error'
       });
     } finally {
       setLoadingList(false);
@@ -374,34 +458,10 @@ const ListagemAparelhos = () => {
 
   // Aplicar filtros
   const applyFilters = async () => {
-    setLoadingList(true);
-    try {
-      let filteredAparelhos = [];
-      
-      if (Object.values(filters).every(value => !value)) {
-        // Se não há filtros, carregar todos
-        const response = await aparelhoService.getAllAparelhos();
-        filteredAparelhos = response.data;
-      } else {
-        // Aplicar filtros específicos
-        const response = await aparelhoService.buscarComFiltros(filters);
-        filteredAparelhos = response.data;
-      }
-      
-      setAparelhos(filteredAparelhos);
-    } catch (error) {
-      console.error('Erro ao aplicar filtros:', error);
-      setAlert({
-        show: true,
-        type: 'error',
-        message: 'Erro ao aplicar filtros.'
-      });
-    } finally {
-      setLoadingList(false);
-    }
+    setPagination(prev => ({ ...prev, page: 0 }));
+    loadAparelhos();
   };
 
-  // Limpar filtros
   const clearFilters = () => {
     setFilters({
       imei: '',
@@ -411,13 +471,14 @@ const ListagemAparelhos = () => {
       empresaNome: '',
       status: ''
     });
+    setPagination(prev => ({ ...prev, page: 0 }));
     loadAparelhos();
   };
 
   // Editar aparelho
   const handleEdit = (aparelho) => {
-    // Redirecionar para a tela de cadastro com o ID do aparelho
-    navigate(`/cadastro-aparelhos/${aparelho.id}`);
+    // Redirecionar para a tela de edição específica do aparelho
+    navigate(`/editar-aparelho/${aparelho.id}`);
   };
 
   // Excluir aparelho
@@ -504,7 +565,7 @@ const ListagemAparelhos = () => {
 
           <TabContainer>
             <TabButtons>
-              <TabButton active={true}>
+              <TabButton $active={true}>
                 <Search size={20} />
                 Listar Aparelhos
               </TabButton>
@@ -668,6 +729,53 @@ const ListagemAparelhos = () => {
                     </Table>
                   )}
                 </TableWrapper>
+                
+                {/* Paginação */}
+                {aparelhos.length > 0 && (
+                  <PaginationContainer>
+                    <PaginationInfo>
+                      Mostrando {pagination.page * pagination.size + 1} - {Math.min((pagination.page + 1) * pagination.size, pagination.totalElements)} de {pagination.totalElements} aparelhos
+                    </PaginationInfo>
+                    
+                    <PaginationButtons>
+                      <PageButton
+                        onClick={() => setPagination(prev => ({ ...prev, page: prev.page - 1 }))}
+                        disabled={pagination.page === 0}
+                      >
+                        <ChevronLeft size={20} />
+                      </PageButton>
+                      
+                      {[...Array(pagination.totalPages)].map((_, index) => {
+                        // Mostrar apenas 5 páginas por vez
+                        if (
+                          index === 0 ||
+                          index === pagination.totalPages - 1 ||
+                          (index >= pagination.page - 1 && index <= pagination.page + 1)
+                        ) {
+                          return (
+                            <PageButton
+                              key={index}
+                              $active={pagination.page === index}
+                              onClick={() => setPagination(prev => ({ ...prev, page: index }))}
+                            >
+                              {index + 1}
+                            </PageButton>
+                          );
+                        } else if (index === pagination.page - 2 || index === pagination.page + 2) {
+                          return <span key={index} style={{ color: theme.colors.neutral.textMuted }}>...</span>;
+                        }
+                        return null;
+                      })}
+                      
+                      <PageButton
+                        onClick={() => setPagination(prev => ({ ...prev, page: prev.page + 1 }))}
+                        disabled={pagination.page === pagination.totalPages - 1}
+                      >
+                        <ChevronRight size={20} />
+                      </PageButton>
+                    </PaginationButtons>
+                  </PaginationContainer>
+                )}
               </TableContainer>
             </div>
           </TabContainer>

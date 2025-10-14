@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Building2, Save, RotateCcw, AlertCircle, CheckCircle, Eye, Edit, Trash2, Plus, Search, Filter } from 'lucide-react';
+import { Building2, Save, RotateCcw, AlertCircle, CheckCircle, Eye, Edit, Trash2, Plus, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
@@ -164,9 +164,9 @@ const TabButtons = styled.div`
 
 const TabButton = styled.button`
   padding: ${theme.spacing.md} ${theme.spacing.lg};
-  background: ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.surface};
-  color: ${props => props.active ? theme.colors.neutral.white : theme.colors.neutral.text};
-  border: 1px solid ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.border};
+  background: ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.surface};
+  color: ${props => props.$active ? theme.colors.neutral.white : theme.colors.neutral.text};
+  border: 1px solid ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
   cursor: pointer;
   transition: all 0.3s ease;
@@ -176,7 +176,7 @@ const TabButton = styled.button`
   font-weight: ${theme.typography.weights.medium};
   
   &:hover {
-    background: ${props => props.active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
+    background: ${props => props.$active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
   }
 `;
 
@@ -372,6 +372,73 @@ const LoadingSpinner = styled.div`
   }
 `;
 
+const PaginationContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: ${theme.spacing.lg};
+  background: ${theme.colors.neutral.surface};
+  border-top: 1px solid ${theme.colors.neutral.border};
+  
+  @media (max-width: ${theme.breakpoints.tablet}) {
+    flex-direction: column;
+    gap: ${theme.spacing.md};
+  }
+`;
+
+const PaginationInfo = styled.div`
+  color: ${theme.colors.neutral.textSecondary};
+  font-size: ${theme.typography.sizes.small};
+`;
+
+const PaginationButtons = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+`;
+
+const PageButton = styled.button`
+  padding: ${theme.spacing.sm} ${theme.spacing.md};
+  border: 1px solid ${theme.colors.neutral.border};
+  background: ${theme.colors.neutral.surface};
+  color: ${theme.colors.neutral.text};
+  border-radius: ${theme.borderRadius.medium};
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover:not(:disabled) {
+    background: ${theme.colors.neutral.surfaceHover};
+    transform: translateY(-1px);
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  &.active {
+    background: ${theme.colors.accent.blue};
+    color: white;
+    border-color: ${theme.colors.accent.blue};
+  }
+  
+  &.ellipsis {
+    border: none;
+    background: transparent;
+    cursor: default;
+    
+    &:hover {
+      background: transparent;
+      transform: none;
+    }
+  }
+`;
+
 const CadastroEmpresas = () => {
   // Estados do formulário
   const [formData, setFormData] = useState({
@@ -415,6 +482,12 @@ const CadastroEmpresas = () => {
     cidade: '',
     estado: '',
     status: ''
+  });
+  const [pagination, setPagination] = useState({
+    page: 0,
+    size: 10,
+    totalPages: 0,
+    totalElements: 0
   });
 
   const handleInputChange = (e) => {
@@ -463,12 +536,12 @@ const CadastroEmpresas = () => {
     }
   };
 
-  // Carregar empresas quando a aba de listagem for ativada
+  // Carregar empresas quando a aba de listagem for ativada ou página mudar
   useEffect(() => {
     if (activeTab === 'listagem') {
       loadEmpresas();
     }
-  }, [activeTab]);
+  }, [activeTab, pagination.page]);
 
   // Gerenciar filtros
   const handleFilterChange = (e) => {
@@ -483,8 +556,24 @@ const CadastroEmpresas = () => {
   const loadEmpresas = async () => {
     setLoadingList(true);
     try {
-      const response = await empresaService.getAllEmpresas();
-      setEmpresas(response.data || []);
+      const params = {
+        page: pagination.page,
+        size: pagination.size,
+        ...Object.entries(filters)
+          .filter(([key, value]) => value.trim() !== '')
+          .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {})
+      };
+
+      const response = await empresaService.filtrarEmpresas(params);
+      
+      if (response.data) {
+        setEmpresas(response.data.content || []);
+        setPagination(prev => ({
+          ...prev,
+          totalPages: response.data.totalPages || 0,
+          totalElements: response.data.totalElements || 0
+        }));
+      }
     } catch (error) {
       console.error('Erro ao carregar empresas:', error);
       setAlert({
@@ -499,30 +588,8 @@ const CadastroEmpresas = () => {
 
   // Aplicar filtros
   const applyFilters = async () => {
-    setLoadingList(true);
-    try {
-      const activeFilters = Object.entries(filters)
-        .filter(([key, value]) => value.trim() !== '')
-        .reduce((acc, [key, value]) => ({ ...acc, [key]: value }), {});
-
-      let response;
-      if (Object.keys(activeFilters).length === 0) {
-        response = await empresaService.getAllEmpresas();
-      } else {
-        response = await empresaService.filtrarEmpresas(activeFilters);
-      }
-      
-      setEmpresas(response.data || []);
-    } catch (error) {
-      console.error('Erro ao filtrar empresas:', error);
-      setAlert({
-        show: true,
-        type: 'error',
-        message: 'Erro ao filtrar empresas.'
-      });
-    } finally {
-      setLoadingList(false);
-    }
+    setPagination(prev => ({ ...prev, page: 0 }));
+    loadEmpresas();
   };
 
   // Limpar filtros
@@ -535,6 +602,7 @@ const CadastroEmpresas = () => {
       estado: '',
       status: ''
     });
+    setPagination(prev => ({ ...prev, page: 0 }));
     loadEmpresas();
   };
 
@@ -742,6 +810,101 @@ const CadastroEmpresas = () => {
     setAlert({ show: false, type: '', message: '' });
   };
 
+  // Funções de navegação da paginação
+  const handlePageChange = (newPage) => {
+    setPagination(prev => ({ ...prev, page: newPage }));
+  };
+
+  const renderPageNumbers = () => {
+    const pages = [];
+    const totalPages = pagination.totalPages;
+    const currentPage = pagination.page;
+    
+    if (totalPages <= 5) {
+      for (let i = 0; i < totalPages; i++) {
+        pages.push(
+          <PageButton
+            key={i}
+            className={currentPage === i ? 'active' : ''}
+            onClick={() => handlePageChange(i)}
+          >
+            {i + 1}
+          </PageButton>
+        );
+      }
+    } else {
+      if (currentPage <= 2) {
+        for (let i = 0; i < 3; i++) {
+          pages.push(
+            <PageButton
+              key={i}
+              className={currentPage === i ? 'active' : ''}
+              onClick={() => handlePageChange(i)}
+            >
+              {i + 1}
+            </PageButton>
+          );
+        }
+        pages.push(<PageButton key="ellipsis1" className="ellipsis">...</PageButton>);
+        pages.push(
+          <PageButton
+            key={totalPages - 1}
+            onClick={() => handlePageChange(totalPages - 1)}
+          >
+            {totalPages}
+          </PageButton>
+        );
+      } else if (currentPage >= totalPages - 3) {
+        pages.push(
+          <PageButton key={0} onClick={() => handlePageChange(0)}>
+            1
+          </PageButton>
+        );
+        pages.push(<PageButton key="ellipsis1" className="ellipsis">...</PageButton>);
+        for (let i = totalPages - 3; i < totalPages; i++) {
+          pages.push(
+            <PageButton
+              key={i}
+              className={currentPage === i ? 'active' : ''}
+              onClick={() => handlePageChange(i)}
+            >
+              {i + 1}
+            </PageButton>
+          );
+        }
+      } else {
+        pages.push(
+          <PageButton key={0} onClick={() => handlePageChange(0)}>
+            1
+          </PageButton>
+        );
+        pages.push(<PageButton key="ellipsis1" className="ellipsis">...</PageButton>);
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pages.push(
+            <PageButton
+              key={i}
+              className={currentPage === i ? 'active' : ''}
+              onClick={() => handlePageChange(i)}
+            >
+              {i + 1}
+            </PageButton>
+          );
+        }
+        pages.push(<PageButton key="ellipsis2" className="ellipsis">...</PageButton>);
+        pages.push(
+          <PageButton
+            key={totalPages - 1}
+            onClick={() => handlePageChange(totalPages - 1)}
+          >
+            {totalPages}
+          </PageButton>
+        );
+      }
+    }
+    
+    return pages;
+  };
+
   return (
     <PageContainer>
       <Sidebar />
@@ -767,14 +930,14 @@ const CadastroEmpresas = () => {
           <TabContainer>
             <TabButtons>
               <TabButton 
-                active={activeTab === 'cadastro'} 
+                $active={activeTab === 'cadastro'} 
                 onClick={() => setActiveTab('cadastro')}
               >
                 <Plus size={20} />
                 {editingEmpresa ? 'Editar Empresa' : 'Cadastrar Empresa'}
               </TabButton>
               <TabButton 
-                active={activeTab === 'listagem'} 
+                $active={activeTab === 'listagem'} 
                 onClick={() => setActiveTab('listagem')}
               >
                 <Search size={20} />
@@ -1243,6 +1406,35 @@ const CadastroEmpresas = () => {
                       </Table>
                     )}
                   </TableWrapper>
+                  
+                  {/* Paginação */}
+                  {empresas.length > 0 && pagination.totalPages > 1 && (
+                    <PaginationContainer>
+                      <PaginationInfo>
+                        Mostrando {pagination.page * pagination.size + 1} a{' '}
+                        {Math.min((pagination.page + 1) * pagination.size, pagination.totalElements)} de{' '}
+                        {pagination.totalElements} empresas
+                      </PaginationInfo>
+                      
+                      <PaginationButtons>
+                        <PageButton
+                          onClick={() => handlePageChange(pagination.page - 1)}
+                          disabled={pagination.page === 0}
+                        >
+                          <ChevronLeft size={16} />
+                        </PageButton>
+                        
+                        {renderPageNumbers()}
+                        
+                        <PageButton
+                          onClick={() => handlePageChange(pagination.page + 1)}
+                          disabled={pagination.page >= pagination.totalPages - 1}
+                        >
+                          <ChevronRight size={16} />
+                        </PageButton>
+                      </PaginationButtons>
+                    </PaginationContainer>
+                  )}
                 </TableContainer>
               </>
             )}

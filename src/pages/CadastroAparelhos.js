@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Smartphone, Save, RotateCcw, AlertCircle, CheckCircle, Calendar, Search, X, User, Plus, Filter, Edit, Trash2 } from 'lucide-react';
 import { FaTrashAlt, FaPencilAlt } from "react-icons/fa";
@@ -164,7 +164,7 @@ const ClienteDisplay = styled.div`
   gap: ${theme.spacing.sm};
   min-height: 56px;
 
-  ${props => props.empty && `
+  ${props => props.$empty && `
     color: ${theme.colors.neutral.textSecondary};
     font-style: italic;
   `}
@@ -402,9 +402,9 @@ const TabButtons = styled.div`
 
 const TabButton = styled.button`
   padding: ${theme.spacing.md} ${theme.spacing.lg};
-  background: ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.surface};
-  color: ${props => props.active ? theme.colors.neutral.white : theme.colors.neutral.text};
-  border: 1px solid ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.border};
+  background: ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.surface};
+  color: ${props => props.$active ? theme.colors.neutral.white : theme.colors.neutral.text};
+  border: 1px solid ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
   cursor: pointer;
   transition: all 0.3s ease;
@@ -414,7 +414,7 @@ const TabButton = styled.button`
   font-weight: ${theme.typography.weights.medium};
   
   &:hover {
-    background: ${props => props.active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
+    background: ${props => props.$active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
   }
 `;
 
@@ -544,6 +544,7 @@ const ActionButton = styled.button`
 
 const CadastroAparelhos = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const isEditing = !!id;
   
   const [formData, setFormData] = useState({
@@ -642,12 +643,17 @@ const CadastroAparelhos = () => {
   const loadAparelhoData = async (aparelhoId) => {
     try {
       setLoading(true);
-      const response = await aparelhoService.getById(aparelhoId);
+      console.log('🔍 Carregando aparelho ID:', aparelhoId);
+      
+      const response = await aparelhoService.getAparelhoById(aparelhoId);
       const aparelho = response.data;
+      console.log('📱 Dados do aparelho carregados:', aparelho);
+      console.log('👤 Cliente ID encontrado:', aparelho.clienteId);
       
       // Carregar dados do cliente
-      const clienteResponse = await clientService.getById(aparelho.clienteId);
+      const clienteResponse = await clientService.getClientById(aparelho.clienteId);
       const cliente = clienteResponse.data;
+      console.log('👤 Dados do cliente carregados:', cliente);
       
       setFormData({
         imei: aparelho.imei || '',
@@ -664,8 +670,9 @@ const CadastroAparelhos = () => {
       });
       
       setClienteSelecionado(cliente);
+      console.log('✅ Cliente selecionado definido:', cliente);
     } catch (error) {
-      console.error('Erro ao carregar dados do aparelho:', error);
+      console.error('❌ Erro ao carregar dados do aparelho:', error);
       showAlert('error', 'Erro ao carregar dados do aparelho');
     } finally {
       setLoading(false);
@@ -893,25 +900,8 @@ const CadastroAparelhos = () => {
   };
 
   const handleEditAparelho = (aparelho) => {
-    setEditingAparelho(aparelho);
-    setActiveTab('cadastro');
-    
-    // Preencher formulário com dados do aparelho
-    setFormData({
-      imei: aparelho.imei || '',
-      modelo: aparelho.modelo || '',
-      marca: aparelho.marca || '',
-      cpfCliente: aparelho.cliente?.cpf || '',
-      empresaId: aparelho.empresaId?.toString() || '',
-      valorParcelado: aparelho.valorParcelado?.toString() || '',
-      valorTotal: aparelho.valorTotal?.toString() || '',
-      parcelas: aparelho.parcelas?.toString() || '1',
-      valorParcela: aparelho.valorParcela?.toString() || '',
-      diasVencimento: aparelho.diasVencimento?.toString() || '30',
-      dataVencimento: aparelho.dataVencimento ? aparelho.dataVencimento.split('T')[0] : ''
-    });
-    
-    setClienteSelecionado(aparelho.cliente);
+    // Redirecionar para a tela de edição específica do aparelho
+    navigate(`/editar-aparelho/${aparelho.id}`);
   };
 
   const handleDeleteAparelho = async (id) => {
@@ -1039,14 +1029,14 @@ const CadastroAparelhos = () => {
         <TabContainer>
           <TabButtons>
             <TabButton 
-              active={activeTab === 'cadastro'} 
+              $active={activeTab === 'cadastro'} 
               onClick={() => handleTabChange('cadastro')}
             >
               <Plus size={20} />
               Cadastrar Aparelho
             </TabButton>
             <TabButton 
-              active={activeTab === 'listagem'} 
+              $active={activeTab === 'listagem'} 
               onClick={() => handleTabChange('listagem')}
             >
               <Filter size={20} />
@@ -1114,7 +1104,7 @@ const CadastroAparelhos = () => {
                   <FormGroup>
                     <label>Cliente *</label>
                     <ClienteSelector>
-                      <ClienteDisplay empty={!clienteSelecionado}>
+                      <ClienteDisplay $empty={!clienteSelecionado}>
                         {clienteSelecionado ? (
                           <>
                             <User size={20} />

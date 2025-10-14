@@ -253,16 +253,16 @@ const PaginationButtons = styled.div`
 
 const PageButton = styled.button`
   padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  background: ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.surface};
-  border: 1px solid ${props => props.active ? theme.colors.accent.blue : theme.colors.neutral.border};
+  background: ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.surface};
+  border: 1px solid ${props => props.$active ? theme.colors.accent.blue : theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
-  color: ${props => props.active ? theme.colors.neutral.surface : theme.colors.neutral.text};
+  color: ${props => props.$active ? theme.colors.neutral.surface : theme.colors.neutral.text};
   cursor: pointer;
   transition: all 0.3s ease;
   min-width: 36px;
   
   &:hover:not(:disabled) {
-    background: ${props => props.active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
+    background: ${props => props.$active ? theme.colors.accent.blueHover : theme.colors.neutral.surfaceHover};
   }
   
   &:disabled {
@@ -740,7 +740,7 @@ const Dashboard = () => {
                       return (
                         <PageButton
                           key={index}
-                          active={pagination.page === index}
+                          $active={pagination.page === index}
                           onClick={() => setPagination(prev => ({ ...prev, page: index }))}
                         >
                           {index + 1}
