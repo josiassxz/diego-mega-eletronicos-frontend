@@ -54,10 +54,6 @@ function App() {
         element={isAuthenticated ? <ClienteDetalhes /> : <Navigate to="/login" />} 
       /> */}
       <Route 
-        path="/cliente/:id/editar" 
-        element={isAuthenticated ? <ClienteDetalhes /> : <Navigate to="/login" />} 
-      />
-      <Route 
         path="/editar-cliente/:id" 
         element={isAuthenticated ? <EditarCliente /> : <Navigate to="/login" />} 
       />
