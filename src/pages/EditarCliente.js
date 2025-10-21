@@ -186,7 +186,9 @@ const EditarCliente = () => {
     referencia3Nome: '',
     referencia3Relacao: '',
     referencia3Whatsapp: '',
-    referencia3Conhece: false
+    referencia3Conhece: false,
+    // Observação
+    observacao: ''
   });
 
   useEffect(() => {
@@ -244,7 +246,9 @@ const EditarCliente = () => {
         referencia3Nome: client.referencia3Nome || '',
         referencia3Relacao: client.referencia3Relacao || '',
         referencia3Whatsapp: client.referencia3Whatsapp || '',
-        referencia3Conhece: client.referencia3Conhece || false
+        referencia3Conhece: client.referencia3Conhece || false,
+        // Observação
+        observacao: client.observacao || ''
       });
 
       // Carregar fotos existentes se houver
@@ -959,6 +963,53 @@ const EditarCliente = () => {
                       </FormGroup>
                     </FormGrid>
                   </div>
+                </FormSection>
+
+                {/* Observações */}
+                <FormSection>
+                  <SectionTitle>
+                    <FileText size={24} />
+                    Observações
+                  </SectionTitle>
+                  
+                  <FormGroup>
+                    <Label>Observações Gerais</Label>
+                    <textarea
+                      name="observacao"
+                      value={formData.observacao}
+                      onChange={handleChange}
+                      placeholder="Digite aqui observações importantes sobre o cliente..."
+                      maxLength={1000}
+                      style={{
+                        width: '100%',
+                        minHeight: '120px',
+                        padding: theme.spacing.sm,
+                        borderRadius: theme.borderRadius.medium,
+                        border: `1px solid ${theme.colors.neutral.gray}`,
+                        backgroundColor: theme.colors.neutral.darkGray,
+                        color: theme.colors.neutral.white,
+                        fontSize: theme.typography.sizes.body,
+                        fontFamily: 'inherit',
+                        resize: 'vertical',
+                        outline: 'none',
+                        transition: 'border-color 0.2s ease'
+                      }}
+                      onFocus={(e) => {
+                        e.target.style.borderColor = theme.colors.primary.main;
+                      }}
+                      onBlur={(e) => {
+                        e.target.style.borderColor = theme.colors.neutral.gray;
+                      }}
+                    />
+                    <div style={{ 
+                      fontSize: theme.typography.sizes.small, 
+                      color: theme.colors.neutral.lightGray,
+                      marginTop: theme.spacing.xs,
+                      textAlign: 'right'
+                    }}>
+                      {formData.observacao.length}/1000 caracteres
+                    </div>
+                  </FormGroup>
                 </FormSection>
               </div>
 
