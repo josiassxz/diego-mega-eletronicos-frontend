@@ -327,10 +327,6 @@ const EditarCliente = () => {
       newErrors.whatsapp = 'WhatsApp é obrigatório';
       errorMessages.push('WhatsApp é obrigatório');
     }
-    if (!formData.telefone.trim()) {
-      newErrors.telefone = 'Telefone é obrigatório';
-      errorMessages.push('Telefone é obrigatório');
-    }
 
     // Validação de email
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
@@ -541,9 +537,7 @@ const EditarCliente = () => {
                         value={formData.telefone}
                         onChange={handleChange}
                         placeholder="(00) 00000-0000"
-                        $error={!!errors.telefone}
                       />
-                      {errors.telefone && <ErrorMessage>{errors.telefone}</ErrorMessage>}
                     </FormGroup>
 
                     <FormGroup>
