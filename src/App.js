@@ -50,10 +50,10 @@ function App() {
         path="/dashboard" 
         element={isAuthenticated ? <Dashboard /> : <Navigate to="/login" />} 
       />
-      {/* <Route 
+      <Route 
         path="/cliente/:id" 
         element={isAuthenticated ? <ClienteDetalhes /> : <Navigate to="/login" />} 
-      /> */}
+      />
       <Route 
         path="/editar-cliente/:id" 
         element={isAuthenticated ? <EditarCliente /> : <Navigate to="/login" />} 
