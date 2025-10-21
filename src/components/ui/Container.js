@@ -3,9 +3,9 @@ import styled from 'styled-components';
 import { theme } from '../../styles/theme';
 
 export const Container = styled.div`
-  max-width: 1600px;
-  margin: 0 auto;
-  padding: 0 ${theme.spacing.lg};
+  width: 100%;
+  margin: 0;
+  padding: 0;
   
   @media (max-width: ${theme.breakpoints.tablet}) {
     padding: 0 ${theme.spacing.md};

@@ -28,9 +28,30 @@ const SidebarContainer = styled.div`
   flex-direction: column;
   box-shadow: ${theme.shadows.medium};
 
+  /* Monitores pequenos */
+  @media (max-width: 1024px) {
+    width: ${props => props.isCollapsed ? '70px' : '260px'};
+  }
+
+  /* Tablets */
   @media (max-width: ${theme.breakpoints.tablet}) {
     transform: translateX(${props => props.isOpen ? '0' : '-100%'});
     width: 280px;
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    width: 100vw;
+    max-width: 320px;
+  }
+
+  /* Monitores ultrawide */
+  @media (min-width: 2560px) {
+    width: ${props => props.isCollapsed ? '100px' : '320px'};
+  }
+
+  @media (min-width: 3440px) {
+    width: ${props => props.isCollapsed ? '120px' : '360px'};
   }
 `;
 
@@ -41,6 +62,29 @@ const SidebarHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   min-height: 80px;
+
+  /* Monitores pequenos */
+  @media (max-width: 1024px) {
+    padding: ${theme.spacing.md};
+    min-height: 70px;
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: ${theme.spacing.sm};
+    min-height: 60px;
+  }
+
+  /* Monitores ultrawide */
+  @media (min-width: 2560px) {
+    padding: ${theme.spacing.xl};
+    min-height: 90px;
+  }
+
+  @media (min-width: 3440px) {
+    padding: ${theme.spacing.xl} ${theme.spacing.xxl};
+    min-height: 100px;
+  }
 `;
 
 const Logo = styled.div`
@@ -59,6 +103,25 @@ const Logo = styled.div`
     opacity: ${props => props.isCollapsed ? '0' : '1'};
     transition: opacity 0.3s ease;
     white-space: nowrap;
+
+    /* Monitores pequenos */
+    @media (max-width: 1024px) {
+      font-size: ${theme.typography.sizes.h4};
+    }
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      font-size: ${theme.typography.sizes.h5};
+    }
+
+    /* Monitores ultrawide */
+    @media (min-width: 2560px) {
+      font-size: ${theme.typography.sizes.h2};
+    }
+
+    @media (min-width: 3440px) {
+      font-size: ${theme.typography.sizes.h1};
+    }
   }
 `;
 
@@ -102,17 +165,66 @@ const MobileToggle = styled.button`
     align-items: center;
     justify-content: center;
   }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    top: 15px;
+    left: 15px;
+    padding: ${theme.spacing.xs};
+  }
 `;
 
 const SidebarNav = styled.nav`
   flex: 1;
   padding: ${theme.spacing.md} 0;
   overflow-y: auto;
+
+  /* Monitores pequenos */
+  @media (max-width: 1024px) {
+    padding: ${theme.spacing.sm} 0;
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: ${theme.spacing.xs} 0;
+  }
+
+  /* Monitores ultrawide */
+  @media (min-width: 2560px) {
+    padding: ${theme.spacing.lg} 0;
+  }
+
+  @media (min-width: 3440px) {
+    padding: ${theme.spacing.xl} 0;
+  }
 `;
 
 const NavItem = styled.div`
   margin: 0 ${theme.spacing.sm};
   margin-bottom: ${theme.spacing.xs};
+
+  /* Monitores pequenos */
+  @media (max-width: 1024px) {
+    margin: 0 ${theme.spacing.xs};
+    margin-bottom: ${theme.spacing.xxs};
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    margin: 0 ${theme.spacing.xs};
+    margin-bottom: 2px;
+  }
+
+  /* Monitores ultrawide */
+  @media (min-width: 2560px) {
+    margin: 0 ${theme.spacing.md};
+    margin-bottom: ${theme.spacing.sm};
+  }
+
+  @media (min-width: 3440px) {
+    margin: 0 ${theme.spacing.lg};
+    margin-bottom: ${theme.spacing.md};
+  }
 `;
 
 const NavLink = styled.button`
@@ -129,7 +241,7 @@ const NavLink = styled.button`
   transition: all 0.3s ease;
   text-align: left;
   font-size: ${theme.typography.sizes.body};
-  font-weight: ${props => props.isActive ? theme.typography.weights.semiBold : theme.typography.weights.medium};
+  font-weight: ${theme.typography.weights.medium};
 
   &:hover {
     background: ${props => props.isActive ? theme.colors.accent.blueLight : theme.colors.neutral.surfaceHover};
@@ -145,11 +257,76 @@ const NavLink = styled.button`
     transition: opacity 0.3s ease;
     white-space: nowrap;
   }
+
+  /* Monitores pequenos */
+  @media (max-width: 1024px) {
+    padding: ${theme.spacing.sm};
+    font-size: ${theme.typography.sizes.small};
+    gap: ${theme.spacing.sm};
+
+    svg {
+      min-width: 18px;
+      height: 18px;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: ${theme.typography.sizes.small};
+
+    svg {
+      min-width: 16px;
+      height: 16px;
+    }
+  }
+
+  /* Monitores ultrawide */
+  @media (min-width: 2560px) {
+    padding: ${theme.spacing.lg};
+    font-size: ${theme.typography.sizes.large};
+    gap: ${theme.spacing.lg};
+
+    svg {
+      min-width: 24px;
+      height: 24px;
+    }
+  }
+
+  @media (min-width: 3440px) {
+    padding: ${theme.spacing.xl};
+    font-size: ${theme.typography.sizes.xl};
+    gap: ${theme.spacing.xl};
+
+    svg {
+      min-width: 28px;
+      height: 28px;
+    }
+  }
 `;
 
 const SidebarFooter = styled.div`
   padding: ${theme.spacing.md};
   border-top: 1px solid ${theme.colors.neutral.border};
+
+  /* Monitores pequenos */
+  @media (max-width: 1024px) {
+    padding: ${theme.spacing.sm};
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: ${theme.spacing.xs};
+  }
+
+  /* Monitores ultrawide */
+  @media (min-width: 2560px) {
+    padding: ${theme.spacing.lg};
+  }
+
+  @media (min-width: 3440px) {
+    padding: ${theme.spacing.xl};
+  }
 `;
 
 const LogoutButton = styled.button`
@@ -181,6 +358,52 @@ const LogoutButton = styled.button`
     opacity: ${props => props.isCollapsed ? '0' : '1'};
     transition: opacity 0.3s ease;
     white-space: nowrap;
+  }
+
+  /* Monitores pequenos */
+  @media (max-width: 1024px) {
+    padding: ${theme.spacing.sm};
+    font-size: ${theme.typography.sizes.small};
+    gap: ${theme.spacing.sm};
+
+    svg {
+      min-width: 18px;
+      height: 18px;
+    }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    padding: ${theme.spacing.xs} ${theme.spacing.sm};
+    font-size: ${theme.typography.sizes.small};
+
+    svg {
+      min-width: 16px;
+      height: 16px;
+    }
+  }
+
+  /* Monitores ultrawide */
+  @media (min-width: 2560px) {
+    padding: ${theme.spacing.lg};
+    font-size: ${theme.typography.sizes.large};
+    gap: ${theme.spacing.lg};
+
+    svg {
+      min-width: 24px;
+      height: 24px;
+    }
+  }
+
+  @media (min-width: 3440px) {
+    padding: ${theme.spacing.xl};
+    font-size: ${theme.typography.sizes.xl};
+    gap: ${theme.spacing.xl};
+
+    svg {
+      min-width: 28px;
+      height: 28px;
+    }
   }
 `;
 
