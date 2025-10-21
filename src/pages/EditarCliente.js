@@ -10,7 +10,9 @@ import {
   FileText, 
   Camera, 
   ArrowLeft,
-  Save
+  Save,
+  AlertCircle,
+  CheckCircle
 } from 'lucide-react';
 import { clientService } from '../services/clientService';
 import { viaCepService } from '../services/viaCepService';
@@ -95,12 +97,52 @@ const LoadingContainer = styled.div`
   color: ${theme.colors.neutral.lightGray};
 `;
 
+const Toast = styled.div`
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  padding: ${theme.spacing.md};
+  border-radius: ${theme.borderRadius.medium};
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  font-weight: ${theme.typography.weights.medium};
+  z-index: 1000;
+  max-width: 400px;
+  box-shadow: ${theme.shadows.large};
+  animation: slideIn 0.3s ease-out;
+  
+  ${props => props.type === 'error' && `
+    background: ${theme.colors.status.errorBackground || '#fee'};
+    color: ${theme.colors.status.error || '#d32f2f'};
+    border: 1px solid ${theme.colors.status.error || '#d32f2f'};
+  `}
+  
+  ${props => props.type === 'success' && `
+    background: ${theme.colors.status.successBackground || '#e8f5e8'};
+    color: ${theme.colors.status.success || '#2e7d32'};
+    border: 1px solid ${theme.colors.status.success || '#2e7d32'};
+  `}
+  
+  @keyframes slideIn {
+    from {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+`;
+
 const EditarCliente = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [pageLoading, setPageLoading] = useState(true);
   const [errors, setErrors] = useState({});
+  const [toast, setToast] = useState({ show: false, type: '', message: '' });
   const [documentFile, setDocumentFile] = useState(null);
   const [selfieFile, setSelfieFile] = useState(null);
   const [existingPhotos, setExistingPhotos] = useState({
@@ -134,14 +176,17 @@ const EditarCliente = () => {
     referencia1Nome: '',
     referencia1Relacao: '',
     referencia1Whatsapp: '',
+    referencia1Conhece: false,
     // Segunda Referência
     referencia2Nome: '',
     referencia2Relacao: '',
     referencia2Whatsapp: '',
+    referencia2Conhece: false,
     // Terceira Referência
     referencia3Nome: '',
     referencia3Relacao: '',
-    referencia3Whatsapp: ''
+    referencia3Whatsapp: '',
+    referencia3Conhece: false
   });
 
   useEffect(() => {
@@ -150,14 +195,18 @@ const EditarCliente = () => {
     }
   }, [id]);
 
+  const showToast = (type, message) => {
+    setToast({ show: true, type, message });
+    setTimeout(() => {
+      setToast({ show: false, type: '', message: '' });
+    }, 5000);
+  };
+
   const loadClient = async () => {
     try {
       setPageLoading(true);
-      console.log('Carregando cliente com ID:', id);
       const response = await clientService.getClientById(id);
-      console.log('Resposta do servidor:', response);
       const client = response.data;
-      console.log('Dados do cliente:', client);
       
       setFormData({
         nome: client.nome || '',
@@ -185,17 +234,18 @@ const EditarCliente = () => {
         referencia1Nome: client.referencia1Nome || '',
         referencia1Relacao: client.referencia1Relacao || '',
         referencia1Whatsapp: client.referencia1Whatsapp || '',
+        referencia1Conhece: client.referencia1Conhece || false,
         // Segunda Referência
         referencia2Nome: client.referencia2Nome || '',
         referencia2Relacao: client.referencia2Relacao || '',
         referencia2Whatsapp: client.referencia2Whatsapp || '',
+        referencia2Conhece: client.referencia2Conhece || false,
         // Terceira Referência
         referencia3Nome: client.referencia3Nome || '',
         referencia3Relacao: client.referencia3Relacao || '',
-        referencia3Whatsapp: client.referencia3Whatsapp || ''
+        referencia3Whatsapp: client.referencia3Whatsapp || '',
+        referencia3Conhece: client.referencia3Conhece || false
       });
-
-      console.log('FormData definido com sucesso');
 
       // Carregar fotos existentes se houver
       if (client.fotoDocumento || client.fotoSelfie) {
@@ -254,62 +304,125 @@ const EditarCliente = () => {
 
   const validateForm = () => {
     const newErrors = {};
+    const errorMessages = [];
 
     // Campos obrigatórios
-    if (!formData.nome.trim()) newErrors.nome = 'Nome é obrigatório';
-    if (!formData.email.trim()) newErrors.email = 'Email é obrigatório';
-    if (!formData.cpf.trim()) newErrors.cpf = 'CPF é obrigatório';
-    if (!formData.whatsapp.trim()) newErrors.whatsapp = 'WhatsApp é obrigatório';
-    if (!formData.telefone.trim()) newErrors.telefone = 'Telefone é obrigatório';
+    if (!formData.nome.trim()) {
+      newErrors.nome = 'Nome é obrigatório';
+      errorMessages.push('Nome é obrigatório');
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email é obrigatório';
+      errorMessages.push('Email é obrigatório');
+    }
+    if (!formData.cpf.trim()) {
+      newErrors.cpf = 'CPF é obrigatório';
+      errorMessages.push('CPF é obrigatório');
+    }
+    if (!formData.whatsapp.trim()) {
+      newErrors.whatsapp = 'WhatsApp é obrigatório';
+      errorMessages.push('WhatsApp é obrigatório');
+    }
+    if (!formData.telefone.trim()) {
+      newErrors.telefone = 'Telefone é obrigatório';
+      errorMessages.push('Telefone é obrigatório');
+    }
 
     // Validação de email
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
       newErrors.email = 'Email inválido';
+      errorMessages.push('Email inválido');
     }
 
     // Validação de CPF (básica)
     if (formData.cpf && formData.cpf.length !== 11) {
       newErrors.cpf = 'CPF deve ter 11 dígitos';
+      errorMessages.push('CPF deve ter 11 dígitos');
     }
 
     // Validação das referências (todas obrigatórias)
     // Primeira referência
     const ref1WhatsApp = (formData.referencia1Whatsapp || '').replace(/\D/g, '');
-    if (!formData.referencia1Nome || !formData.referencia1Nome.trim()) newErrors.referencia1Nome = 'Nome é obrigatório';
-    if (!formData.referencia1Relacao || !formData.referencia1Relacao.trim()) newErrors.referencia1Relacao = 'Relação é obrigatória';
-    if (!ref1WhatsApp || ref1WhatsApp.length < 10) newErrors.referencia1Whatsapp = 'WhatsApp é obrigatório e deve ser válido';
+    if (!formData.referencia1Nome || !formData.referencia1Nome.trim()) {
+      newErrors.referencia1Nome = 'Nome da 1ª referência é obrigatório';
+      errorMessages.push('Nome da 1ª referência é obrigatório');
+    }
+    if (!formData.referencia1Relacao || !formData.referencia1Relacao.trim()) {
+      newErrors.referencia1Relacao = 'Relação da 1ª referência é obrigatória';
+      errorMessages.push('Relação da 1ª referência é obrigatória');
+    }
+    if (!ref1WhatsApp || ref1WhatsApp.length < 10) {
+      newErrors.referencia1Whatsapp = 'WhatsApp da 1ª referência é obrigatório';
+      errorMessages.push('WhatsApp da 1ª referência é obrigatório');
+    }
     
     // Segunda referência
     const ref2WhatsApp = (formData.referencia2Whatsapp || '').replace(/\D/g, '');
-    if (!formData.referencia2Nome || !formData.referencia2Nome.trim()) newErrors.referencia2Nome = 'Nome é obrigatório';
-    if (!formData.referencia2Relacao || !formData.referencia2Relacao.trim()) newErrors.referencia2Relacao = 'Relação é obrigatória';
-    if (!ref2WhatsApp || ref2WhatsApp.length < 10) newErrors.referencia2Whatsapp = 'WhatsApp é obrigatório e deve ser válido';
+    if (!formData.referencia2Nome || !formData.referencia2Nome.trim()) {
+      newErrors.referencia2Nome = 'Nome da 2ª referência é obrigatório';
+      errorMessages.push('Nome da 2ª referência é obrigatório');
+    }
+    if (!formData.referencia2Relacao || !formData.referencia2Relacao.trim()) {
+      newErrors.referencia2Relacao = 'Relação da 2ª referência é obrigatória';
+      errorMessages.push('Relação da 2ª referência é obrigatória');
+    }
+    if (!ref2WhatsApp || ref2WhatsApp.length < 10) {
+      newErrors.referencia2Whatsapp = 'WhatsApp da 2ª referência é obrigatório';
+      errorMessages.push('WhatsApp da 2ª referência é obrigatório');
+    }
     
     // Terceira referência
     const ref3WhatsApp = (formData.referencia3Whatsapp || '').replace(/\D/g, '');
-    if (!formData.referencia3Nome || !formData.referencia3Nome.trim()) newErrors.referencia3Nome = 'Nome é obrigatório';
-    if (!formData.referencia3Relacao || !formData.referencia3Relacao.trim()) newErrors.referencia3Relacao = 'Relação é obrigatória';
-    if (!ref3WhatsApp || ref3WhatsApp.length < 10) newErrors.referencia3Whatsapp = 'WhatsApp é obrigatório e deve ser válido';
+    if (!formData.referencia3Nome || !formData.referencia3Nome.trim()) {
+      newErrors.referencia3Nome = 'Nome da 3ª referência é obrigatório';
+      errorMessages.push('Nome da 3ª referência é obrigatório');
+    }
+    if (!formData.referencia3Relacao || !formData.referencia3Relacao.trim()) {
+      newErrors.referencia3Relacao = 'Relação da 3ª referência é obrigatória';
+      errorMessages.push('Relação da 3ª referência é obrigatória');
+    }
+    if (!ref3WhatsApp || ref3WhatsApp.length < 10) {
+      newErrors.referencia3Whatsapp = 'WhatsApp da 3ª referência é obrigatório';
+      errorMessages.push('WhatsApp da 3ª referência é obrigatório');
+    }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    
+    if (errorMessages.length > 0) {
+      const firstError = errorMessages[0];
+      const totalErrors = errorMessages.length;
+      const message = totalErrors > 1 
+        ? `${firstError} (e mais ${totalErrors - 1} campo${totalErrors > 2 ? 's' : ''})`
+        : firstError;
+      showToast('error', message);
+      return false;
+    }
+    
+    return true;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      return;
+    }
     
     setLoading(true);
     
     try {
       // Usar a nova função que decide automaticamente entre JSON e multipart
       await clientService.updateClientWithPhotos(id, formData, documentFile, selfieFile);
-
-      navigate('/dashboard');
+      
+      showToast('success', 'Cliente atualizado com sucesso!');
+      
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 2000);
     } catch (error) {
       console.error('Erro ao atualizar cliente:', error);
-      setErrors({ submit: 'Erro ao atualizar cliente. Tente novamente.' });
+      const errorMessage = error.response?.data?.message || 'Erro ao atualizar cliente. Tente novamente.';
+      showToast('error', errorMessage);
     } finally {
       setLoading(false);
     }
@@ -715,6 +828,19 @@ const EditarCliente = () => {
                         />
                         {errors.referencia1Whatsapp && <ErrorMessage>{errors.referencia1Whatsapp}</ErrorMessage>}
                       </FormGroup>
+
+                      <FormGroup>
+                        <Label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <input
+                            type="checkbox"
+                            name="referencia1Conhece"
+                            checked={formData.referencia1Conhece}
+                            onChange={(e) => setFormData(prev => ({ ...prev, referencia1Conhece: e.target.checked }))}
+                            style={{ margin: 0 }}
+                          />
+                          Você conhece esta referência?
+                        </Label>
+                      </FormGroup>
                     </FormGrid>
                   </div>
 
@@ -760,6 +886,19 @@ const EditarCliente = () => {
                         />
                         {errors.referencia2Whatsapp && <ErrorMessage>{errors.referencia2Whatsapp}</ErrorMessage>}
                       </FormGroup>
+
+                      <FormGroup>
+                        <Label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <input
+                            type="checkbox"
+                            name="referencia2Conhece"
+                            checked={formData.referencia2Conhece}
+                            onChange={(e) => setFormData(prev => ({ ...prev, referencia2Conhece: e.target.checked }))}
+                            style={{ margin: 0 }}
+                          />
+                          Você conhece esta referência?
+                        </Label>
+                      </FormGroup>
                     </FormGrid>
                   </div>
 
@@ -804,6 +943,19 @@ const EditarCliente = () => {
                           $error={!!errors.referencia3Whatsapp}
                         />
                         {errors.referencia3Whatsapp && <ErrorMessage>{errors.referencia3Whatsapp}</ErrorMessage>}
+                      </FormGroup>
+
+                      <FormGroup>
+                        <Label style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                          <input
+                            type="checkbox"
+                            name="referencia3Conhece"
+                            checked={formData.referencia3Conhece}
+                            onChange={(e) => setFormData(prev => ({ ...prev, referencia3Conhece: e.target.checked }))}
+                            style={{ margin: 0 }}
+                          />
+                          Você conhece esta referência?
+                        </Label>
                       </FormGroup>
                     </FormGrid>
                   </div>
@@ -879,6 +1031,14 @@ const EditarCliente = () => {
           </form>
         </Container>
       </MainContent>
+      
+      {/* Toast Notification */}
+      {toast.show && (
+        <Toast type={toast.type}>
+          {toast.type === 'error' ? <AlertCircle size={20} /> : <CheckCircle size={20} />}
+          {toast.message}
+        </Toast>
+      )}
     </>
   );
 };

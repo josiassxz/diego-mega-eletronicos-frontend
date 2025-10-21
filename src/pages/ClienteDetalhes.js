@@ -1058,6 +1058,22 @@ const ClienteDetalhes = () => {
                           <FieldValue>{cliente.referencia1Whatsapp || 'Não informado'}</FieldValue>
                         )}
                       </div>
+                      <div>
+                        <FieldLabel>Você conhece esta referência?</FieldLabel>
+                        {editMode ? (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
+                            <input
+                              type="checkbox"
+                              checked={formData.referencia1Conhece || false}
+                              onChange={(e) => handleInputChange('referencia1Conhece', e.target.checked)}
+                              style={{ margin: 0 }}
+                            />
+                            <span style={{ color: '#666', fontSize: '14px' }}>Sim, conheço esta pessoa</span>
+                          </div>
+                        ) : (
+                          <FieldValue>{cliente.referencia1Conhece ? 'Sim' : 'Não'}</FieldValue>
+                        )}
+                      </div>
                     </div>
                   </Field>
 
@@ -1103,6 +1119,22 @@ const ClienteDetalhes = () => {
                           <FieldValue>{cliente.referencia2Whatsapp || 'Não informado'}</FieldValue>
                         )}
                       </div>
+                      <div>
+                        <FieldLabel>Você conhece esta referência?</FieldLabel>
+                        {editMode ? (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
+                            <input
+                              type="checkbox"
+                              checked={formData.referencia2Conhece || false}
+                              onChange={(e) => handleInputChange('referencia2Conhece', e.target.checked)}
+                              style={{ margin: 0 }}
+                            />
+                            <span style={{ color: '#666', fontSize: '14px' }}>Sim, conheço esta pessoa</span>
+                          </div>
+                        ) : (
+                          <FieldValue>{cliente.referencia2Conhece ? 'Sim' : 'Não'}</FieldValue>
+                        )}
+                      </div>
                     </div>
                   </Field>
 
@@ -1146,6 +1178,22 @@ const ClienteDetalhes = () => {
                           />
                         ) : (
                           <FieldValue>{cliente.referencia3Whatsapp || 'Não informado'}</FieldValue>
+                        )}
+                      </div>
+                      <div>
+                        <FieldLabel>Você conhece esta referência?</FieldLabel>
+                        {editMode ? (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px' }}>
+                            <input
+                              type="checkbox"
+                              checked={formData.referencia3Conhece || false}
+                              onChange={(e) => handleInputChange('referencia3Conhece', e.target.checked)}
+                              style={{ margin: 0 }}
+                            />
+                            <span style={{ color: '#666', fontSize: '14px' }}>Sim, conheço esta pessoa</span>
+                          </div>
+                        ) : (
+                          <FieldValue>{cliente.referencia3Conhece ? 'Sim' : 'Não'}</FieldValue>
                         )}
                       </div>
                     </div>

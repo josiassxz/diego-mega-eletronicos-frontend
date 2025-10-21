@@ -23,8 +23,13 @@ export const clientService = {
     
     // Adicionar todos os campos do cliente
     Object.keys(clientData).forEach(key => {
-      if (clientData[key] !== null && clientData[key] !== undefined && clientData[key] !== '') {
-        formData.append(key, clientData[key]);
+      const value = clientData[key];
+      // Incluir todos os valores exceto null, undefined e strings vazias
+      // Mas manter valores booleanos (incluindo false)
+      if (value !== null && value !== undefined && value !== '') {
+        formData.append(key, value);
+      } else if (typeof value === 'boolean') {
+        formData.append(key, value);
       }
     });
     
@@ -65,8 +70,13 @@ export const clientService = {
     
     // Adicionar todos os campos do cliente
     Object.keys(clientData).forEach(key => {
-      if (clientData[key] !== null && clientData[key] !== undefined && clientData[key] !== '') {
-        formData.append(key, clientData[key]);
+      const value = clientData[key];
+      // Incluir todos os valores exceto null, undefined e strings vazias
+      // Mas manter valores booleanos (incluindo false)
+      if (value !== null && value !== undefined && value !== '') {
+        formData.append(key, value);
+      } else if (typeof value === 'boolean') {
+        formData.append(key, value);
       }
     });
     

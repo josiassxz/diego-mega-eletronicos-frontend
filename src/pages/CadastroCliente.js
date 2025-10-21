@@ -194,14 +194,17 @@ const CadastroCliente = () => {
     referencia1Nome: '',
     referencia1Relacao: '',
     referencia1Whatsapp: '',
+    referencia1Conhece: false,
     // Segunda Referência
     referencia2Nome: '',
     referencia2Relacao: '',
     referencia2Whatsapp: '',
+    referencia2Conhece: false,
     // Terceira Referência
     referencia3Nome: '',
     referencia3Relacao: '',
-    referencia3Whatsapp: ''
+    referencia3Whatsapp: '',
+    referencia3Conhece: false
   });
   
   const estadosCivis = [
