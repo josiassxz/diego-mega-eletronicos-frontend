@@ -145,9 +145,15 @@ const ClienteDetalhes = () => {
   const [toast, setToast] = useState({ show: false, type: '', message: '' });
   const [documentFile, setDocumentFile] = useState(null);
   const [selfieFile, setSelfieFile] = useState(null);
+  const [documentoPessoalFile, setDocumentoPessoalFile] = useState(null);
+  const [extratoBancarioFile, setExtratoBancarioFile] = useState(null);
+  const [comprovanteEnderecoFile, setComprovanteEnderecoFile] = useState(null);
   const [existingPhotos, setExistingPhotos] = useState({
     fotoDocumento: null,
-    fotoSelfie: null
+    fotoSelfie: null,
+    documentoPessoal: null,
+    extratoBancarioComprovanteRenda: null,
+    comprovanteEndereco: null
   });
   
   const [formData, setFormData] = useState({
@@ -252,12 +258,15 @@ const ClienteDetalhes = () => {
       });
 
       // Carregar fotos existentes se houver
-      if (client.fotoDocumento || client.fotoSelfie) {
+      if (client.fotoDocumento || client.fotoSelfie || client.documentoPessoal || client.extratoBancarioComprovanteRenda || client.comprovanteEndereco) {
         try {
           const photosResponse = await clientService.getClientPhotos(id);
           setExistingPhotos({
             fotoDocumento: photosResponse.data.fotos.fotoDocumento || null,
-            fotoSelfie: photosResponse.data.fotos.fotoSelfie || null
+            fotoSelfie: photosResponse.data.fotos.fotoSelfie || null,
+            documentoPessoal: photosResponse.data.fotos.documentoPessoal || null,
+            extratoBancarioComprovanteRenda: photosResponse.data.fotos.extratoBancarioComprovanteRenda || null,
+            comprovanteEndereco: photosResponse.data.fotos.comprovanteEndereco || null
           });
         } catch (photoError) {
           console.error('Erro ao carregar fotos:', photoError);
@@ -416,7 +425,7 @@ const ClienteDetalhes = () => {
     
     try {
       // Usar a nova função que decide automaticamente entre JSON e multipart
-      await clientService.updateClientWithPhotos(id, formData, documentFile, selfieFile);
+      await clientService.updateClientWithPhotos(id, formData, documentFile, selfieFile, documentoPessoalFile, extratoBancarioFile, comprovanteEnderecoFile);
       
       showToast('success', 'Cliente atualizado com sucesso!');
       setEditMode(false);
@@ -443,6 +452,9 @@ const ClienteDetalhes = () => {
     setErrors({});
     setDocumentFile(null);
     setSelfieFile(null);
+    setDocumentoPessoalFile(null);
+    setExtratoBancarioFile(null);
+    setComprovanteEnderecoFile(null);
     loadClient(); // Recarregar dados originais
   };
 
@@ -1125,6 +1137,57 @@ const ClienteDetalhes = () => {
                       }}
                       existingPhotoBase64={existingPhotos.fotoSelfie}
                       photoFileName={`selfie_${formData.nome || 'cliente'}_${id}`}
+                      disabled={!editMode}
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <Label>Documento Pessoal</Label>
+                    <FileUpload
+                      label="documento pessoal"
+                      accept="image/*,.pdf"
+                      onFileSelect={setDocumentoPessoalFile}
+                      fileName={documentoPessoalFile?.name}
+                      onRemove={() => {
+                        setDocumentoPessoalFile(null);
+                        setExistingPhotos(prev => ({ ...prev, documentoPessoal: null }));
+                      }}
+                      existingPhotoBase64={existingPhotos.documentoPessoal}
+                      photoFileName={`documento_pessoal_${formData.nome || 'cliente'}_${id}`}
+                      disabled={!editMode}
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <Label>Extrato Bancário / Comprovante de Renda</Label>
+                    <FileUpload
+                      label="extrato bancário ou comprovante de renda"
+                      accept="image/*,.pdf"
+                      onFileSelect={setExtratoBancarioFile}
+                      fileName={extratoBancarioFile?.name}
+                      onRemove={() => {
+                        setExtratoBancarioFile(null);
+                        setExistingPhotos(prev => ({ ...prev, extratoBancarioComprovanteRenda: null }));
+                      }}
+                      existingPhotoBase64={existingPhotos.extratoBancarioComprovanteRenda}
+                      photoFileName={`extrato_bancario_${formData.nome || 'cliente'}_${id}`}
+                      disabled={!editMode}
+                    />
+                  </FormGroup>
+
+                  <FormGroup>
+                    <Label>Comprovante de Endereço</Label>
+                    <FileUpload
+                      label="comprovante de endereço"
+                      accept="image/*,.pdf"
+                      onFileSelect={setComprovanteEnderecoFile}
+                      fileName={comprovanteEnderecoFile?.name}
+                      onRemove={() => {
+                        setComprovanteEnderecoFile(null);
+                        setExistingPhotos(prev => ({ ...prev, comprovanteEndereco: null }));
+                      }}
+                      existingPhotoBase64={existingPhotos.comprovanteEndereco}
+                      photoFileName={`comprovante_endereco_${formData.nome || 'cliente'}_${id}`}
                       disabled={!editMode}
                     />
                   </FormGroup>
