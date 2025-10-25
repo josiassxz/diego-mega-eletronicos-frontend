@@ -166,6 +166,7 @@ const ClienteDetalhes = () => {
     cep: '',
     rua: '',
     numero: '',
+    complemento: '',
     bairro: '',
     cidade: '',
     estado: '',
@@ -226,6 +227,7 @@ const ClienteDetalhes = () => {
         cep: client.cep || '',
         rua: client.rua || '',
         numero: client.numero || '',
+        complemento: client.complemento || '',
         bairro: client.bairro || '',
         cidade: client.cidade || '',
         estado: client.estado || '',
@@ -654,6 +656,18 @@ const ClienteDetalhes = () => {
                         value={formData.numero}
                         onChange={handleChange}
                         placeholder="Digite o número"
+                        disabled={!editMode}
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <Label>Complemento</Label>
+                      <Input
+                        type="text"
+                        name="complemento"
+                        value={formData.complemento}
+                        onChange={handleChange}
+                        placeholder="Digite o complemento"
                         disabled={!editMode}
                       />
                     </FormGroup>

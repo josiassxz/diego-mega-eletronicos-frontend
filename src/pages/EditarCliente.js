@@ -166,6 +166,7 @@ const EditarCliente = () => {
     cep: '',
     rua: '',
     numero: '',
+    complemento: '',
     bairro: '',
     cidade: '',
     estado: '',
@@ -602,6 +603,17 @@ const EditarCliente = () => {
                         value={formData.numero}
                         onChange={handleChange}
                         placeholder="Digite o número"
+                      />
+                    </FormGroup>
+
+                    <FormGroup>
+                      <Label>Complemento</Label>
+                      <Input
+                        type="text"
+                        name="complemento"
+                        value={formData.complemento}
+                        onChange={handleChange}
+                        placeholder="Complemento (opcional)"
                       />
                     </FormGroup>
 
