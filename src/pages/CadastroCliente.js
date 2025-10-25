@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { ArrowLeft, Save, User, Mail, CreditCard, Heart, Calendar, MessageCircle, MapPin, Building2, Wallet, CheckCircle2 } from 'lucide-react';
@@ -179,6 +179,7 @@ const CadastroCliente = () => {
     dataNascimento: '',
     email: '',
     whatsapp: '',
+    cpfVendedor: '', // Campo para armazenar o CPF do vendedor (referer)
     cep: '',
     rua: '',
     bairro: '',
@@ -207,6 +208,19 @@ const CadastroCliente = () => {
     referencia3Conhece: false
   });
   
+  // Capturar parâmetro referer da URL ao carregar o componente
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const referer = urlParams.get('referer');
+    
+    if (referer) {
+      setFormData(prev => ({
+        ...prev,
+        cpfVendedor: referer
+      }));
+    }
+  }, []);
+
   const estadosCivis = [
     'Solteiro(a)',
     'Casado(a)',
@@ -379,6 +393,7 @@ const CadastroCliente = () => {
         dataNascimento: dataFormatada,
         email: formData.email,
         whatsapp: formData.whatsapp.replace(/\D/g, ''),
+        cpfVendedor: formData.cpfVendedor || '', // Incluir CPF do vendedor (referer)
         cep: formData.cep.replace(/\D/g, ''),
         rua: formData.rua,
         numero: formData.numero,
