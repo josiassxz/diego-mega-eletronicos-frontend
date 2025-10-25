@@ -72,7 +72,41 @@ const RemoveButton = styled.button`
   }
 `;
 
-export const FileUpload = ({ onFileSelect, preview, onRemove, label = "Selecionar arquivo" }) => {
+const FileNameContainer = styled.div`
+  position: relative;
+  padding: ${theme.spacing.md};
+  background: ${theme.colors.neutral.surface};
+  border: 1px solid ${theme.colors.neutral.border};
+  border-radius: ${theme.borderRadius.medium};
+  display: flex;
+  align-items: center;
+  gap: ${theme.spacing.sm};
+  min-height: 60px;
+`;
+
+const FileIcon = styled.span`
+  font-size: 24px;
+  flex-shrink: 0;
+`;
+
+const FileName = styled.span`
+  color: ${theme.colors.neutral.text};
+  font-size: ${theme.typography.sizes.body};
+  word-break: break-word;
+  flex: 1;
+`;
+
+export const FileUpload = ({ 
+  onFileSelect, 
+  preview, 
+  onRemove, 
+  label = "Selecionar arquivo", 
+  accept = "image/*",
+  fileName,
+  existingPhotoBase64,
+  photoFileName,
+  disabled = false
+}) => {
   const inputRef = useRef(null);
   
   const handleFileChange = (e) => {
@@ -81,29 +115,44 @@ export const FileUpload = ({ onFileSelect, preview, onRemove, label = "Seleciona
       onFileSelect(file);
     }
   };
+
+  // Determina se deve mostrar preview de imagem ou nome do arquivo
+  const showImagePreview = preview || existingPhotoBase64;
+  const showFileName = fileName && !showImagePreview;
   
   return (
     <UploadContainer>
-      {!preview ? (
-        <UploadButton>
+      {!showImagePreview && !showFileName ? (
+        <UploadButton style={{ opacity: disabled ? 0.6 : 1, cursor: disabled ? 'not-allowed' : 'pointer' }}>
           <Upload size={32} />
           <span>{label}</span>
           <input
             ref={inputRef}
             type="file"
-            accept="image/*"
+            accept={accept}
             onChange={handleFileChange}
+            disabled={disabled}
           />
         </UploadButton>
-      ) : (
+      ) : showImagePreview ? (
         <PreviewContainer>
-          <img src={preview} alt="Preview" />
-          {onRemove && (
+          <img src={preview || `data:image/jpeg;base64,${existingPhotoBase64}`} alt="Preview" />
+          {onRemove && !disabled && (
             <RemoveButton onClick={onRemove} type="button">
               <X size={20} />
             </RemoveButton>
           )}
         </PreviewContainer>
+      ) : (
+        <FileNameContainer>
+          <FileIcon>📄</FileIcon>
+          <FileName>{fileName}</FileName>
+          {onRemove && !disabled && (
+            <RemoveButton onClick={onRemove} type="button">
+              <X size={20} />
+            </RemoveButton>
+          )}
+        </FileNameContainer>
       )}
     </UploadContainer>
   );

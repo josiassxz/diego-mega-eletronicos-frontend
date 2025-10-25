@@ -18,7 +18,7 @@ export const clientService = {
   },
 
   // Criar cliente com fotos (multipart/form-data)
-  createClientWithPhotos: (clientData, documentFile, selfieFile) => {
+  createClientWithPhotos: (clientData, documentFile, selfieFile, documentoPessoalFile = null, extratoBancarioFile = null, comprovanteEnderecoFile = null) => {
     const formData = new FormData();
     
     // Adicionar todos os campos do cliente
@@ -41,6 +41,18 @@ export const clientService = {
     if (selfieFile) {
       formData.append('fotoSelfie', selfieFile);
     }
+
+    if (documentoPessoalFile) {
+      formData.append('documentoPessoal', documentoPessoalFile);
+    }
+
+    if (extratoBancarioFile) {
+      formData.append('extratoBancarioComprovanteRenda', extratoBancarioFile);
+    }
+
+    if (comprovanteEnderecoFile) {
+      formData.append('comprovanteEndereco', comprovanteEnderecoFile);
+    }
     
     return api.post('/clientes', formData, {
       headers: {
@@ -55,9 +67,9 @@ export const clientService = {
   },
 
   // Atualizar cliente com fotos (condicional: JSON ou multipart)
-  updateClientWithPhotos: (id, clientData, documentFile = null, selfieFile = null) => {
+  updateClientWithPhotos: (id, clientData, documentFile = null, selfieFile = null, documentoPessoalFile = null, extratoBancarioFile = null, comprovanteEnderecoFile = null) => {
     // Se não há fotos novas, usar JSON
-    if (!documentFile && !selfieFile) {
+    if (!documentFile && !selfieFile && !documentoPessoalFile && !extratoBancarioFile && !comprovanteEnderecoFile) {
       return api.put(`/clientes/${id}`, clientData, {
         headers: {
           'Content-Type': 'application/json'
@@ -88,8 +100,20 @@ export const clientService = {
     if (selfieFile) {
       formData.append('fotoSelfie', selfieFile);
     }
+
+    if (documentoPessoalFile) {
+      formData.append('documentoPessoal', documentoPessoalFile);
+    }
+
+    if (extratoBancarioFile) {
+      formData.append('extratoBancarioComprovanteRenda', extratoBancarioFile);
+    }
+
+    if (comprovanteEnderecoFile) {
+      formData.append('comprovanteEndereco', comprovanteEnderecoFile);
+    }
     
-    return api.put(`/clientes/${id}`, formData, {
+    return api.put(`/clientes/${id}/com-fotos`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
