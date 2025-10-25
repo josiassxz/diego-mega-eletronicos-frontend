@@ -52,25 +52,31 @@ const PreviewContainer = styled.div`
 
 const FileContainer = styled.div`
   position: relative;
-  padding: ${theme.spacing.md};
+  padding: ${theme.spacing.lg};
   background: ${theme.colors.neutral.surface};
   border: 1px solid ${theme.colors.neutral.border};
   border-radius: ${theme.borderRadius.medium};
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
-  min-height: 80px;
+  gap: ${theme.spacing.md};
+  min-height: 120px;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    border-color: ${theme.colors.accent.blue};
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
 `;
 
 const FileIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
+  width: 64px;
+  height: 64px;
   border-radius: ${theme.borderRadius.medium};
-  background: ${props => props.isPdf ? theme.colors.accent.red + '20' : theme.colors.accent.blue + '20'};
-  color: ${props => props.isPdf ? theme.colors.accent.red : theme.colors.accent.blue};
+  background: ${props => props.isPdf ? theme.colors.status.warning + '20' : theme.colors.accent.blue + '20'};
+  color: ${props => props.isPdf ? theme.colors.status.warning : theme.colors.accent.blue};
   flex-shrink: 0;
 `;
 
@@ -81,16 +87,18 @@ const FileInfo = styled.div`
 
 const FileName = styled.div`
   color: ${theme.colors.neutral.text};
-  font-size: ${theme.typography.sizes.body};
+  font-size: ${theme.typography.sizes.large};
   font-weight: ${theme.typography.weights.medium};
   word-break: break-word;
-  margin-bottom: ${theme.spacing.xs};
+  margin-bottom: ${theme.spacing.sm};
+  line-height: 1.4;
 `;
 
 const FileType = styled.div`
   color: ${theme.colors.neutral.textSecondary};
-  font-size: ${theme.typography.sizes.small};
+  font-size: ${theme.typography.sizes.body};
   text-transform: uppercase;
+  font-weight: ${theme.typography.weights.medium};
 `;
 
 const ActionButtons = styled.div`
@@ -204,15 +212,13 @@ export const FileUpload = ({
 
   // Determinar tipo de arquivo
   const isPdf = fileName?.toLowerCase().includes('.pdf') || photoFileName?.toLowerCase().includes('.pdf');
-  const isImage = !isPdf && (existingPhotoBase64 || preview);
   
-  // Determina se deve mostrar preview de imagem, arquivo PDF ou nome do arquivo
-  const showImagePreview = isImage && (preview || existingPhotoBase64);
-  const showFileInfo = (fileName || existingPhotoBase64) && !showImagePreview;
+  // Sempre mostrar apenas informações do arquivo (sem preview de imagem)
+  const showFileInfo = fileName || existingPhotoBase64 || preview;
   
   return (
     <UploadContainer>
-      {!showImagePreview && !showFileInfo ? (
+      {!showFileInfo ? (
         <UploadButton style={{ opacity: disabled ? 0.6 : 1, cursor: disabled ? 'not-allowed' : 'pointer' }}>
           <Upload size={32} />
           <span>{label}</span>
@@ -224,40 +230,24 @@ export const FileUpload = ({
             disabled={disabled}
           />
         </UploadButton>
-      ) : showImagePreview ? (
-        <PreviewContainer>
-          <img src={preview || `data:image/jpeg;base64,${existingPhotoBase64}`} alt="Preview" />
-          <ActionButtons style={{ position: 'absolute', top: theme.spacing.xs, right: theme.spacing.xs, flexDirection: 'column' }}>
-            {existingPhotoBase64 && (
-              <ActionButton className="download" onClick={handleDownload} type="button" title="Baixar arquivo">
-                <Download size={16} />
-              </ActionButton>
-            )}
-            {onRemove && !disabled && (
-              <ActionButton className="remove" onClick={onRemove} type="button" title="Remover arquivo">
-                <X size={16} />
-              </ActionButton>
-            )}
-          </ActionButtons>
-        </PreviewContainer>
       ) : (
         <FileContainer>
           <FileIcon isPdf={isPdf}>
-            {isPdf ? <FileText size={24} /> : <Image size={24} />}
+            {isPdf ? <FileText size={32} /> : <Image size={32} />}
           </FileIcon>
           <FileInfo>
-            <FileName>{fileName || photoFileName || 'Arquivo'}</FileName>
-            <FileType>{isPdf ? 'PDF' : 'Imagem'}</FileType>
+            <FileName>{fileName || photoFileName || 'Arquivo selecionado'}</FileName>
+            <FileType>{isPdf ? 'Documento PDF' : 'Arquivo de Imagem'}</FileType>
           </FileInfo>
           <ActionButtons>
             {existingPhotoBase64 && (
               <ActionButton className="download" onClick={handleDownload} type="button" title="Baixar arquivo">
-                <Download size={16} />
+                <Download size={18} />
               </ActionButton>
             )}
             {onRemove && !disabled && (
               <ActionButton className="remove" onClick={onRemove} type="button" title="Remover arquivo">
-                <X size={16} />
+                <X size={18} />
               </ActionButton>
             )}
           </ActionButtons>
