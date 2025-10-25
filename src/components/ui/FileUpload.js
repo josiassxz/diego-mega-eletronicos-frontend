@@ -211,7 +211,9 @@ export const FileUpload = ({
   };
 
   // Determinar tipo de arquivo
-  const isPdf = fileName?.toLowerCase().includes('.pdf') || photoFileName?.toLowerCase().includes('.pdf');
+  const isPdf = fileName?.toLowerCase().includes('.pdf') || 
+                photoFileName?.toLowerCase().includes('.pdf') ||
+                (existingPhotoBase64 && existingPhotoBase64.startsWith('data:application/pdf'));
   
   // Sempre mostrar apenas informações do arquivo (sem preview de imagem)
   const showFileInfo = fileName || existingPhotoBase64 || preview;
