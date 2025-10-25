@@ -5,6 +5,7 @@ import {
   Home, 
   Building2, 
   Smartphone, 
+  Users,
   LogOut,
   Menu,
   X,
@@ -444,6 +445,11 @@ const Sidebar = () => {
       icon: Smartphone,
       label: 'Gestão de Aparelhos',
       path: '/cadastro-aparelhos'
+    },
+    {
+      icon: Users,
+      label: 'Gestão de Vendedores',
+      path: '/cadastro-vendedores'
     }
   ];
 
