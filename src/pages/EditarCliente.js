@@ -540,7 +540,7 @@ const EditarCliente = () => {
                     </FormGroup>
 
                     <FormGroup>
-                      <Label>Telefone *</Label>
+                      <Label>Telefone</Label>
                       <MaskedInput
                         mask="phone"
                         name="telefone"

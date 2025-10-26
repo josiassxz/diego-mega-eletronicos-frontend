@@ -241,7 +241,7 @@ const TableWrapper = styled.div`
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  min-width: 800px;
+  min-width: 900px;
   
   thead {
     background: ${theme.colors.neutral.surfaceHover};
@@ -270,12 +270,13 @@ const Table = styled.table`
       padding: ${theme.spacing.sm} ${theme.spacing.md};
       font-size: ${theme.typography.sizes.tiny};
       
-      &:nth-child(1) { min-width: 150px; width: 30%; }
-      &:nth-child(2) { min-width: 120px; width: 25%; }
+      &:nth-child(1) { min-width: 150px; width: 25%; }
+      &:nth-child(2) { min-width: 120px; width: 20%; }
       &:nth-child(3) { min-width: 100px; width: 15%; }
-      &:nth-child(4) { min-width: 100px; width: 15%; }
-      &:nth-child(5) { min-width: 100px; width: 10%; }
-      &:nth-child(6) { min-width: 80px; width: 5%; }
+      &:nth-child(4) { min-width: 100px; width: 12%; }
+      &:nth-child(5) { min-width: 100px; width: 12%; }
+      &:nth-child(6) { min-width: 100px; width: 10%; }
+      &:nth-child(7) { min-width: 80px; width: 6%; }
     }
     
     /* Monitores médios */
@@ -288,12 +289,13 @@ const Table = styled.table`
       padding: ${theme.spacing.xl} ${theme.spacing.xxl};
       font-size: ${theme.typography.sizes.medium};
       
-      &:nth-child(1) { min-width: 300px; width: 25%; }
-      &:nth-child(2) { min-width: 250px; width: 25%; }
+      &:nth-child(1) { min-width: 250px; width: 20%; }
+      &:nth-child(2) { min-width: 200px; width: 18%; }
       &:nth-child(3) { min-width: 180px; width: 15%; }
-      &:nth-child(4) { min-width: 180px; width: 15%; }
-      &:nth-child(5) { min-width: 180px; width: 15%; }
-      &:nth-child(6) { min-width: 120px; width: 5%; }
+      &:nth-child(4) { min-width: 150px; width: 12%; }
+      &:nth-child(5) { min-width: 150px; width: 12%; }
+      &:nth-child(6) { min-width: 150px; width: 13%; }
+      &:nth-child(7) { min-width: 120px; width: 10%; }
     }
   }
   
@@ -303,24 +305,26 @@ const Table = styled.table`
     border-bottom: 1px solid ${theme.colors.neutral.borderLight};
     white-space: nowrap;
     
-    &:nth-child(1) { min-width: 200px; width: 25%; }
-    &:nth-child(2) { min-width: 150px; width: 25%; }
+    &:nth-child(1) { min-width: 180px; width: 20%; }
+    &:nth-child(2) { min-width: 140px; width: 18%; }
     &:nth-child(3) { min-width: 120px; width: 15%; }
-    &:nth-child(4) { min-width: 120px; width: 15%; }
-    &:nth-child(5) { min-width: 120px; width: 15%; }
-    &:nth-child(6) { min-width: 100px; width: 5%; }
+    &:nth-child(4) { min-width: 110px; width: 12%; }
+    &:nth-child(5) { min-width: 110px; width: 12%; }
+    &:nth-child(6) { min-width: 120px; width: 13%; }
+    &:nth-child(7) { min-width: 100px; width: 10%; }
     
     /* Monitores pequenos */
     @media (max-width: 1024px) {
       padding: ${theme.spacing.sm} ${theme.spacing.md};
       font-size: ${theme.typography.sizes.small};
       
-      &:nth-child(1) { min-width: 150px; width: 30%; }
-      &:nth-child(2) { min-width: 120px; width: 25%; }
+      &:nth-child(1) { min-width: 130px; width: 25%; }
+      &:nth-child(2) { min-width: 110px; width: 20%; }
       &:nth-child(3) { min-width: 100px; width: 15%; }
-      &:nth-child(4) { min-width: 100px; width: 15%; }
-      &:nth-child(5) { min-width: 100px; width: 10%; }
-      &:nth-child(6) { min-width: 80px; width: 5%; }
+      &:nth-child(4) { min-width: 90px; width: 12%; }
+      &:nth-child(5) { min-width: 90px; width: 12%; }
+      &:nth-child(6) { min-width: 90px; width: 10%; }
+      &:nth-child(7) { min-width: 80px; width: 6%; }
     }
     
     /* Monitores médios */
@@ -332,12 +336,13 @@ const Table = styled.table`
     @media (min-width: 2560px) {
       padding: ${theme.spacing.xl} ${theme.spacing.xxl};
       
-      &:nth-child(1) { min-width: 300px; width: 25%; }
-      &:nth-child(2) { min-width: 250px; width: 25%; }
+      &:nth-child(1) { min-width: 250px; width: 20%; }
+      &:nth-child(2) { min-width: 200px; width: 18%; }
       &:nth-child(3) { min-width: 180px; width: 15%; }
-      &:nth-child(4) { min-width: 180px; width: 15%; }
-      &:nth-child(5) { min-width: 180px; width: 15%; }
-      &:nth-child(6) { min-width: 120px; width: 5%; }
+      &:nth-child(4) { min-width: 150px; width: 12%; }
+      &:nth-child(5) { min-width: 150px; width: 12%; }
+      &:nth-child(6) { min-width: 150px; width: 13%; }
+      &:nth-child(7) { min-width: 120px; width: 10%; }
     }
   }
   
@@ -820,6 +825,7 @@ const Dashboard = () => {
                     <th>CPF</th>
                     <th>Email</th>
                     <th>WhatsApp</th>
+                    <th>Origem</th>
                     <th>Data Cadastro</th>
                     <th>Status</th>
                     <th>Ações</th>
@@ -828,7 +834,7 @@ const Dashboard = () => {
                 <tbody>
                   {clientes.length === 0 ? (
                     <tr>
-                      <td colSpan="7">
+                      <td colSpan="8">
                         <EmptyState>
                           <Users size={48} />
                           <p>Nenhum cliente encontrado</p>
@@ -842,6 +848,7 @@ const Dashboard = () => {
                         <td>{cliente.cpf}</td>
                         <td>{cliente.email}</td>
                         <td>{cliente.whatsapp}</td>
+                        <td>{cliente.nomeVendedor || '-'}</td>
                         <td>{formatarDataHora(cliente.dataCadastro)}</td>
                         <td>
                           <StatusBadge status={cliente.status}>

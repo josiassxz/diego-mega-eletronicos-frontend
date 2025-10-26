@@ -338,10 +338,7 @@ const ClienteDetalhes = () => {
       newErrors.whatsapp = 'WhatsApp é obrigatório';
       errorMessages.push('WhatsApp é obrigatório');
     }
-    if (!formData.telefone.trim()) {
-      newErrors.telefone = 'Telefone é obrigatório';
-      errorMessages.push('Telefone é obrigatório');
-    }
+
 
     // Validação de email
     if (formData.email && !/\S+@\S+\.\S+/.test(formData.email)) {
@@ -587,7 +584,7 @@ const ClienteDetalhes = () => {
                     </FormGroup>
 
                     <FormGroup>
-                      <Label>Telefone *</Label>
+                      <Label>Telefone</Label>
                       <MaskedInput
                         mask="phone"
                         name="telefone"
