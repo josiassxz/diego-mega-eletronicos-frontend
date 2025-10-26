@@ -505,10 +505,10 @@ const ClienteDetalhes = () => {
                     <ArrowLeft size={20} />
                     Voltar
                   </Button>
-                  <Button onClick={handleEdit}>
+                  {/* <Button onClick={handleEdit}>
                     <Edit size={20} />
                     Editar
-                  </Button>
+                  </Button> */}
                 </>
               )}
             </div>
