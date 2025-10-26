@@ -283,7 +283,7 @@ const Home = () => {
         <TextSection>
           <Subtitle>Bem-vindo à</Subtitle>
           <MainTitle>
-            <CreditCard size={120} style={{marginBottom: '20px', color: theme.colors.accent.blue}} />
+            {/* <CreditCard size={120} style={{marginBottom: '20px', color: theme.colors.accent.blue}} /> */}
           </MainTitle>
           <AccentTitle>CELULAR<br />NO BOLETO</AccentTitle>
           <StartButton onClick={() => navigate('/cadastro-cliente')}>
@@ -293,9 +293,17 @@ const Home = () => {
 
         <LogoSection>
           <LogoContainer onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
-            <Logo3D>
-              PAY+<br />
-            </Logo3D>
+            <img 
+              src="/assets/logo.jpeg" 
+              alt="Logo da Empresa" 
+              style={{
+                maxHeight: '300px', 
+                width: 'auto',
+                filter: 'drop-shadow(0 8px 16px rgba(0,0,0,0.3))',
+                transition: 'all 0.3s ease',
+                borderRadius: '12px'
+              }} 
+            />
           </LogoContainer>
         </LogoSection>
       </MainContent>
