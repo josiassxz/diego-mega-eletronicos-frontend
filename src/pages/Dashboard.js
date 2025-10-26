@@ -16,7 +16,8 @@ import {
   RefreshCw,
   Filter,
   Eye,
-  Edit
+  Edit,
+  Copy
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { clientService } from '../services/clientService';
@@ -747,6 +748,22 @@ const Dashboard = () => {
     }
   };
 
+  // Função para copiar link de referência
+  const copyReferralLink = () => {
+    if (user && user.cpf) {
+      const cpfLimpo = user.cpf.replace(/[.-]/g, '');
+      const baseUrl = window.location.origin;
+      const referralLink = `${baseUrl}/cadastro-cliente?referer=${cpfLimpo}`;
+      
+      navigator.clipboard.writeText(referralLink).then(() => {
+        alert('Link de referência copiado com sucesso!');
+      }).catch(err => {
+        console.error('Erro ao copiar link:', err);
+        alert('Erro ao copiar link de referência');
+      });
+    }
+  };
+
   // Função para detectar novos clientes
   const detectarNovosClientes = (clientesAtuais, clientesAnteriores) => {
     if (!clientesAnteriores || clientesAnteriores.length === 0) {
@@ -875,6 +892,15 @@ const Dashboard = () => {
               <StatValue>{estatisticas?.clientesAprovados || 0}</StatValue>
               <StatLabel>Aprovados</StatLabel>
             </StatCard>
+            
+            {/* Card de referência - apenas para vendedores */}
+            {!isAdmin() && user?.cpf && (
+              <StatCard onClick={copyReferralLink} style={{ cursor: 'pointer' }}>
+                <Copy size={32} color={theme.colors.accent.purple} />
+                <StatValue style={{ fontSize: '14px', textAlign: 'center' }}>Clique para copiar</StatValue>
+                <StatLabel>Copiar Link de Referência</StatLabel>
+              </StatCard>
+            )}
           </StatsGrid>
           
           {/* Filtros */}

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Users, Save, RotateCcw, AlertCircle, CheckCircle, Eye, Edit, Trash2, Plus, Search, Filter, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Users, Save, RotateCcw, AlertCircle, CheckCircle, Eye, Edit, Trash2, Plus, Search, Filter, ChevronLeft, ChevronRight, Copy } from 'lucide-react';
 import Sidebar from '../components/Sidebar';
 import { Container } from '../components/ui/Container';
 import { Button } from '../components/ui/Button';
@@ -304,6 +304,25 @@ const CadastroVendedores = () => {
   const showMessage = (type, text) => {
     setMessage({ type, text });
     setTimeout(() => setMessage({ type: '', text: '' }), 5000);
+  };
+
+  const copyReferralLink = async (vendedor) => {
+    try {
+      // Remove pontos e traços do CPF
+      const cpfLimpo = vendedor.cpf.replace(/[.-]/g, '');
+      
+      // Constrói o link de referência
+      const baseUrl = window.location.origin;
+      const referralLink = `${baseUrl}/cadastro-cliente?referer=${cpfLimpo}`;
+      
+      // Copia para a área de transferência
+      await navigator.clipboard.writeText(referralLink);
+      
+      showMessage('success', `Link de referência copiado para ${vendedor.nome}!`);
+    } catch (error) {
+      console.error('Erro ao copiar link:', error);
+      showMessage('error', 'Erro ao copiar link de referência');
+    }
   };
 
   const handleInputChange = (e) => {
@@ -642,6 +661,18 @@ const CadastroVendedores = () => {
                         title="Excluir"
                       >
                         <Trash2 size={16} />
+                      </ActionButton>
+
+                      <ActionButton
+                        variant="copy"
+                        onClick={() => copyReferralLink(vendedor)}
+                        title="Copiar link de referência"
+                        style={{ 
+                          background: theme.colors.primary.main,
+                          color: 'green'
+                        }}
+                      >
+                        <Copy size={16} />
                       </ActionButton>
                       
                       <Select

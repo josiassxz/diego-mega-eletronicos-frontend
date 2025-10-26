@@ -213,7 +213,7 @@ const Login = () => {
         <LoginCard>
           <LoginHeader>
             <Logo>
-              <img src="/assets/logo.jpeg" alt="Mega Eletrônicos GO" style={{maxHeight: '300px', width: 'auto'}} />
+              <img src="/assets/logo.jpeg" alt="Pay+" style={{maxHeight: '300px', width: 'auto'}} />
             </Logo>
             <LoginTitle>Entrar</LoginTitle>
             <LoginSubtitle>Acesse sua conta para continuar</LoginSubtitle>
