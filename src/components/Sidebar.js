@@ -428,7 +428,7 @@ const Sidebar = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { logout } = useAuth();
+  const { logout, isAdmin } = useAuth();
 
   const menuItems = [
     {
@@ -491,23 +491,32 @@ const Sidebar = () => {
         </SidebarHeader>
 
         <SidebarNav>
-          {menuItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = location.pathname === item.path;
-            
-            return (
-              <NavItem key={item.path}>
-                <NavLink
-                  isActive={isActive}
-                  isCollapsed={isCollapsed}
-                  onClick={() => handleNavigation(item.path)}
-                >
-                  <Icon size={20} />
-                  <span>{item.label}</span>
-                </NavLink>
-              </NavItem>
-            );
-          })}
+          {menuItems
+            .filter((item) => {
+              // Se o usuário não é admin, mostrar apenas o Dashboard
+              if (!isAdmin()) {
+                return item.path === '/dashboard';
+              }
+              // Se é admin, mostrar todos os itens
+              return true;
+            })
+            .map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+              
+              return (
+                <NavItem key={item.path}>
+                  <NavLink
+                    isActive={isActive}
+                    isCollapsed={isCollapsed}
+                    onClick={() => handleNavigation(item.path)}
+                  >
+                    <Icon size={20} />
+                    <span>{item.label}</span>
+                  </NavLink>
+                </NavItem>
+              );
+            })}
         </SidebarNav>
 
         <SidebarFooter>

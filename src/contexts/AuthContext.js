@@ -47,7 +47,12 @@ export const AuthProvider = ({ children }) => {
       // Tentar autenticação com backend
       try {
         const response = await authService.login(loginData);
-        const { token, user: userData } = response.data;
+        
+        // O backend retorna { mensagem, usuario } ao invés de { token, user }
+        const { usuario: userData } = response.data;
+        
+        // Gerar token temporário (ajustar conforme necessário)
+        const token = 'temp-token-' + Date.now();
         
         localStorage.setItem('token', token);
         localStorage.setItem('user', JSON.stringify(userData));
@@ -94,12 +99,19 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  // Função para verificar se o usuário é admin (case-insensitive)
+  const isAdmin = () => {
+    if (!user || !user.perfil) return false;
+    return user.perfil.toLowerCase() === 'admin';
+  };
+
   const value = {
     isAuthenticated,
     user,
     login,
     logout,
-    loading
+    loading,
+    isAdmin
   };
 
   return (

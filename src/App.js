@@ -15,7 +15,18 @@ import EditarAparelho from './pages/EditarAparelho';
 import CadastroVendedores from './pages/CadastroVendedores';
 
 function App() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, isAdmin } = useAuth();
+
+  // Componente para proteger rotas que requerem perfil admin
+  const ProtectedRoute = ({ children }) => {
+    if (!isAuthenticated) {
+      return <Navigate to="/login" />;
+    }
+    if (!isAdmin()) {
+      return <Navigate to="/dashboard" />;
+    }
+    return children;
+  };
 
   // Mostrar loading enquanto verifica autenticação
   if (loading) {
@@ -53,31 +64,31 @@ function App() {
       />
       <Route 
         path="/cliente/:id" 
-        element={isAuthenticated ? <ClienteDetalhes /> : <Navigate to="/login" />} 
+        element={<ProtectedRoute><ClienteDetalhes /></ProtectedRoute>} 
       />
       <Route 
         path="/editar-cliente/:id" 
-        element={isAuthenticated ? <EditarCliente /> : <Navigate to="/login" />} 
+        element={<ProtectedRoute><EditarCliente /></ProtectedRoute>} 
       />
       <Route 
         path="/cadastro-empresas" 
-        element={isAuthenticated ? <CadastroEmpresas /> : <Navigate to="/login" />} 
+        element={<ProtectedRoute><CadastroEmpresas /></ProtectedRoute>} 
       />
       <Route 
         path="/cadastro-aparelhos" 
-        element={isAuthenticated ? <CadastroAparelhos /> : <Navigate to="/login" />} 
+        element={<ProtectedRoute><CadastroAparelhos /></ProtectedRoute>} 
       />
       <Route 
         path="/cadastro-aparelhos/:id" 
-        element={isAuthenticated ? <CadastroAparelhos /> : <Navigate to="/login" />} 
+        element={<ProtectedRoute><CadastroAparelhos /></ProtectedRoute>} 
       />
       <Route 
         path="/editar-aparelho/:id" 
-        element={isAuthenticated ? <EditarAparelho /> : <Navigate to="/login" />} 
+        element={<ProtectedRoute><EditarAparelho /></ProtectedRoute>} 
       />
       <Route 
         path="/cadastro-vendedores" 
-        element={isAuthenticated ? <CadastroVendedores /> : <Navigate to="/login" />} 
+        element={<ProtectedRoute><CadastroVendedores /></ProtectedRoute>} 
       />
     </Routes>
   );
