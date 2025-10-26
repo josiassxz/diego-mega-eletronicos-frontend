@@ -555,6 +555,10 @@ const Dashboard = () => {
   
   const [filtrosAtivos, setFiltrosAtivos] = useState(false);
   
+  // Estados para notificação sonora de novos clientes
+  const [clientesAnteriores, setClientesAnteriores] = useState([]);
+  const [pollingInterval, setPollingInterval] = useState(null);
+  
   // useEffect para carregamento inicial dos dados do usuário
   useEffect(() => {
     reloadUserData();
@@ -572,6 +576,80 @@ const Dashboard = () => {
       loadClientes();
     }
   }, [user]);
+
+  // useEffect para polling de novos clientes a cada 60 segundos
+  useEffect(() => {
+    if (!user) return; // Só inicia o polling quando o usuário estiver carregado
+
+    const verificarNovosClientes = async () => {
+      try {
+        const params = {
+          page: 0, // Sempre verificar a primeira página para novos clientes
+          size: pagination.size,
+          sortBy: 'dataCadastro',
+          sortDir: 'DESC'
+        };
+
+        // Aplicar filtros do vendedor se necessário
+        if (!isAdmin && user?.cpf) {
+          params.cpfVendedor = user.cpf;
+        }
+
+        // Aplicar filtros ativos se houver
+        if (filtros.nome) params.nome = filtros.nome;
+        if (filtros.email) params.email = filtros.email;
+        if (filtros.cpf) params.cpf = filtros.cpf;
+        if (filtros.whatsapp) params.whatsapp = filtros.whatsapp;
+        if (filtros.status) params.status = filtros.status;
+        if (filtros.dataInicio) params.dataInicio = filtros.dataInicio;
+        if (filtros.dataFim) params.dataFim = filtros.dataFim;
+
+        const response = await clientService.getClientes(params);
+        const clientesAtuais = response.content || [];
+
+        // Detectar novos clientes e tocar som se houver
+        if (detectarNovosClientes(clientesAtuais, clientesAnteriores)) {
+          tocarSomNotificacao();
+          console.log('Novos clientes detectados!');
+        }
+
+        // Atualizar lista de clientes anteriores
+        setClientesAnteriores(clientesAtuais);
+
+        // Atualizar a lista atual se estivermos na primeira página
+        if (pagination.page === 0) {
+          setClientes(clientesAtuais);
+          setPagination(prev => ({
+            ...prev,
+            totalElements: response.totalElements || 0,
+            totalPages: response.totalPages || 0
+          }));
+        }
+      } catch (error) {
+        console.error('Erro ao verificar novos clientes:', error);
+      }
+    };
+
+    // Configurar intervalo de 60 segundos
+    const interval = setInterval(verificarNovosClientes, 60000);
+    setPollingInterval(interval);
+
+    // Cleanup do intervalo
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [user, isAdmin, filtros, pagination.size, clientesAnteriores]);
+
+  // useEffect para limpar o polling quando o componente for desmontado
+  useEffect(() => {
+    return () => {
+      if (pollingInterval) {
+        clearInterval(pollingInterval);
+      }
+    };
+  }, [pollingInterval]);
   
   const loadEstatisticas = async () => {
     try {
@@ -608,12 +686,18 @@ const Dashboard = () => {
       
       const response = await clientService.getClientesPaginado(params);
       
-      setClientes(response.content);
+      const clientesCarregados = response.content || [];
+      setClientes(clientesCarregados);
       setPagination(prev => ({
         ...prev,
         totalPages: response.totalPages,
         totalElements: response.totalElements
       }));
+
+      // Atualizar clientes anteriores se estivermos na primeira página
+      if (pagination.page === 0) {
+        setClientesAnteriores(clientesCarregados);
+      }
     } catch (error) {
       console.error('Erro ao carregar clientes:', error);
     } finally {
@@ -648,6 +732,32 @@ const Dashboard = () => {
     setFiltrosAtivos(false);
     setPagination(prev => ({ ...prev, page: 0 }));
     setTimeout(loadClientes, 100);
+  };
+
+  // Função para tocar o som de notificação
+  const tocarSomNotificacao = () => {
+    try {
+      const audio = new Audio('/assets/ding.mp3');
+      audio.volume = 0.7; // Volume moderado
+      audio.play().catch(error => {
+        console.log('Erro ao reproduzir som:', error);
+      });
+    } catch (error) {
+      console.log('Erro ao criar áudio:', error);
+    }
+  };
+
+  // Função para detectar novos clientes
+  const detectarNovosClientes = (clientesAtuais, clientesAnteriores) => {
+    if (!clientesAnteriores || clientesAnteriores.length === 0) {
+      return false; // Primeira carga, não há clientes anteriores para comparar
+    }
+
+    // Verifica se há novos clientes comparando os IDs
+    const idsAnteriores = new Set(clientesAnteriores.map(cliente => cliente.id));
+    const novosClientes = clientesAtuais.filter(cliente => !idsAnteriores.has(cliente.id));
+    
+    return novosClientes.length > 0;
   };
   
   const atualizarStatus = async (id, novoStatus) => {
