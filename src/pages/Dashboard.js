@@ -1036,6 +1036,7 @@ const Dashboard = () => {
                               value={cliente.status}
                               onChange={(e) => atualizarStatus(cliente.id, e.target.value)}
                               style={{ minWidth: '120px', marginLeft: '8px' }}
+                              disabled={!isAdmin()}
                             >
                               <option value="Pendente">Pendente</option>
                               <option value="Em Análise">Em Análise</option>
