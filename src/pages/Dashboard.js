@@ -528,7 +528,7 @@ const LoadingSpinner = styled.div`
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user, isAdmin, reloadUserData } = useAuth();
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
   
@@ -555,10 +555,23 @@ const Dashboard = () => {
   
   const [filtrosAtivos, setFiltrosAtivos] = useState(false);
   
+  // useEffect para carregamento inicial dos dados do usuário
+  useEffect(() => {
+    reloadUserData();
+  }, []);
+
+  // useEffect para carregamento inicial e mudanças de página
   useEffect(() => {
     loadEstatisticas();
     loadClientes();
   }, [pagination.page]);
+
+  // useEffect para carregar dados quando o usuário muda (excluindo carregamento inicial)
+  useEffect(() => {
+    if (user) {
+      loadClientes();
+    }
+  }, [user]);
   
   const loadEstatisticas = async () => {
     try {
@@ -588,7 +601,13 @@ const Dashboard = () => {
       if (filtros.dataInicio) params.dataInicio = new Date(filtros.dataInicio).toISOString();
       if (filtros.dataFim) params.dataFim = new Date(filtros.dataFim).toISOString();
       
+      // Se o usuário for vendedor, filtrar apenas seus clientes
+      if (user && !isAdmin() && user.cpf) {
+        params.cpfVendedor = user.cpf;
+      }
+      
       const response = await clientService.getClientesPaginado(params);
+      
       setClientes(response.content);
       setPagination(prev => ({
         ...prev,
@@ -664,6 +683,11 @@ const Dashboard = () => {
       if (filtros.status) params.status = filtros.status;
       if (filtros.dataInicio) params.dataInicio = new Date(filtros.dataInicio).toISOString();
       if (filtros.dataFim) params.dataFim = new Date(filtros.dataFim).toISOString();
+      
+      // Se o usuário for vendedor, filtrar apenas seus clientes
+      if (user && !isAdmin() && user.cpf) {
+        params.cpfVendedor = user.cpf;
+      }
       
       await clientService.exportarCSV(params);
     } catch (error) {

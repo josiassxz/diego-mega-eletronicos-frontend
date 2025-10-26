@@ -36,6 +36,27 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
+  const reloadUserData = () => {
+    const token = localStorage.getItem('token');
+    const userData = localStorage.getItem('user');
+    
+    if (token && userData && userData !== 'undefined') {
+      try {
+        const parsedUser = JSON.parse(userData);
+        setIsAuthenticated(true);
+        setUser(parsedUser);
+        return parsedUser;
+      } catch (error) {
+        console.error('Error parsing user data from localStorage:', error);
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        setIsAuthenticated(false);
+        setUser(null);
+      }
+    }
+    return null;
+  };
+
   const login = async (credentials) => {
     try {
       // Mapear username para login como esperado pelo backend
@@ -111,7 +132,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     loading,
-    isAdmin
+    isAdmin,
+    reloadUserData
   };
 
   return (
