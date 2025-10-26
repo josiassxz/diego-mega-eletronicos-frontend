@@ -213,7 +213,7 @@ const Login = () => {
         <LoginCard>
           <LoginHeader>
             <Logo>
-              MEGA ELETRÔNICOS <span>GO</span>
+              <img src="/assets/logo.jpeg" alt="Mega Eletrônicos GO" style={{maxHeight: '300px', width: 'auto'}} />
             </Logo>
             <LoginTitle>Entrar</LoginTitle>
             <LoginSubtitle>Acesse sua conta para continuar</LoginSubtitle>
@@ -231,6 +231,7 @@ const Login = () => {
                   onChange={handleChange}
                   placeholder="Digite seu email"
                   $hasError={!!errors.username}
+                  style={{ width: '100%' }}
                 />
               </InputGroup>
               {errors.username && <ErrorMessage>{errors.username}</ErrorMessage>}
@@ -247,6 +248,7 @@ const Login = () => {
                   onChange={handleChange}
                   placeholder="Digite sua senha"
                   $hasError={!!errors.password}
+                  style={{ width: '100%' }}
                 />
                 <TogglePasswordButton
                   type="button"

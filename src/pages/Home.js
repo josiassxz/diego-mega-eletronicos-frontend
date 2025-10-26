@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
+import { CreditCard } from 'lucide-react';
 import { theme } from '../styles/theme';
 
 const fadeIn = keyframes`
@@ -281,7 +282,9 @@ const Home = () => {
       <MainContent>
         <TextSection>
           <Subtitle>Bem-vindo à</Subtitle>
-          <MainTitle>MEGA BOLETO</MainTitle>
+          <MainTitle>
+            <CreditCard size={120} style={{marginBottom: '20px', color: theme.colors.accent.blue}} />
+          </MainTitle>
           <AccentTitle>CELULAR<br />NO BOLETO</AccentTitle>
           <StartButton onClick={() => navigate('/cadastro-cliente')}>
             Cadastrar Cliente
@@ -291,9 +294,7 @@ const Home = () => {
         <LogoSection>
           <LogoContainer onClick={handleLogoClick} style={{ cursor: 'pointer' }}>
             <Logo3D>
-              MEGA<br />
-              ELETRÔNICOS<br />
-              GO
+              PAY+<br />
             </Logo3D>
           </LogoContainer>
         </LogoSection>

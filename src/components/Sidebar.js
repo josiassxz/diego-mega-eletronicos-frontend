@@ -482,8 +482,7 @@ const Sidebar = () => {
       <SidebarContainer isCollapsed={isCollapsed} isOpen={isMobileOpen}>
         <SidebarHeader>
           <Logo isCollapsed={isCollapsed}>
-            <Building2 size={24} color={theme.colors.accent.blue} />
-            <h2>Mega Eletrônicos</h2>
+            <img src="/assets/logo.jpeg" alt="Mega Eletrônicos" style={{maxHeight: '200px', width: 'auto'}} />
           </Logo>
           <CollapseButton onClick={toggleCollapse}>
             {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
