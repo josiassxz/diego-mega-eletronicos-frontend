@@ -145,9 +145,9 @@ export const clientService = {
   // Novos métodos para Dashboard
   
   // Obter estatísticas do dashboard
-  getEstatisticas: async () => {
+  getEstatisticas: async (params = {}) => {
     try {
-      const response = await api.get('/clientes/estatisticas');
+      const response = await api.get('/clientes/estatisticas', { params });
       return response.data;
     } catch (error) {
       console.error('Erro ao buscar estatísticas:', error);

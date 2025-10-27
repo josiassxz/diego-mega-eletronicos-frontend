@@ -329,14 +329,12 @@ const CadastroVendedores = () => {
     const { name, value } = e.target;
     
     if (name === 'cpf') {
-      // Aplicar máscara de CPF
       const cpfFormatado = vendedorService.formatarCpf(value);
       setFormData(prev => ({ ...prev, [name]: cpfFormatado }));
     } else if (name === 'nome') {
-      // Formatar nome
-      setFormData(prev => ({ ...prev, [name]: vendedorService.formatarNome(value) }));
+      // Não formatar durante a digitação para permitir espaços
+      setFormData(prev => ({ ...prev, [name]: value }));
     } else if (name === 'email') {
-      // Converter email para minúsculas
       setFormData(prev => ({ ...prev, [name]: value.toLowerCase() }));
     } else {
       setFormData(prev => ({ ...prev, [name]: value }));
@@ -402,7 +400,7 @@ const CadastroVendedores = () => {
       setLoading(true);
       
       const vendedorData = {
-        nome: formData.nome.trim(),
+        nome: vendedorService.formatarNome(formData.nome),
         cpf: vendedorService.limparCpf(formData.cpf),
         email: formData.email.trim(),
         senha: formData.senha

@@ -592,7 +592,7 @@ const Dashboard = () => {
         };
 
         // Aplicar filtros do vendedor se necessário
-        if (!isAdmin && user?.cpf) {
+        if (!isAdmin() && user?.cpf) {
           params.cpfVendedor = user.cpf;
         }
 
@@ -605,7 +605,7 @@ const Dashboard = () => {
         if (filtros.dataInicio) params.dataInicio = filtros.dataInicio;
         if (filtros.dataFim) params.dataFim = filtros.dataFim;
 
-        const response = await clientService.getClientes(params);
+        const response = await clientService.getClientesPaginado(params);
         const clientesAtuais = response.content || [];
 
         // Detectar novos clientes e tocar som se houver
@@ -654,7 +654,12 @@ const Dashboard = () => {
   
   const loadEstatisticas = async () => {
     try {
-      const data = await clientService.getEstatisticas();
+      const params = {};
+      // Se for vendedor, filtrar estatísticas pelos seus clientes
+      if (user && !isAdmin() && user.cpf) {
+        params.cpfVendedor = user.cpf;
+      }
+      const data = await clientService.getEstatisticas(params);
       setEstatisticas(data);
     } catch (error) {
       console.error('Erro ao carregar estatísticas:', error);
